@@ -1,11 +1,13 @@
 package business.conversion;
 
 import java.io.*;
+import java.text.DecimalFormat;
 
 public class BinaryToTextConversion {
 
     public static void binaryToText(String pathToBinaryFile, String pathToTextFile) throws IOException {
         PrintWriter writer = null;
+        DecimalFormat df = new DecimalFormat("#.######");
         try {
             writer = new PrintWriter(pathToTextFile, "UTF-8");
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
@@ -21,8 +23,11 @@ public class BinaryToTextConversion {
         while (input.available() > 0) {
             try {
                 double nr = input.readDouble();
+                String str = Double.toString(nr);
+                str = str.replace("E-", "");
+                str = str.replace("E", "");
                 assert writer != null;
-                writer.println(nr);
+                writer.println(Double.valueOf(df.format(Double.valueOf(str))));
             } catch (EOFException e) {
                 break;
             }
@@ -40,4 +45,5 @@ public class BinaryToTextConversion {
             return file;
         }
     }
+
 }

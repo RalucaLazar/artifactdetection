@@ -27,5 +27,7 @@ public class BinaryToTextConversionMain {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
     }
+
 }

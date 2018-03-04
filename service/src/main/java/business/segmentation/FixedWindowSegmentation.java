@@ -1,16 +1,16 @@
 package business.segmentation;
 
-import business.builders.StructureBuilder;
+import business.builders.AbstractStructureBuilder;
 import entity.Configuration;
 
 import java.util.Arrays;
 
 public class FixedWindowSegmentation {
 
-    private StructureBuilder sb;
+    private AbstractStructureBuilder sb;
 
-    public FixedWindowSegmentation() {
-        sb = new StructureBuilder();
+    public FixedWindowSegmentation(AbstractStructureBuilder sb) {
+        this.sb = sb;
     }
 
     /**
@@ -37,7 +37,7 @@ public class FixedWindowSegmentation {
         }
     }
 
-    public StructureBuilder getStructureBuilder() {
+    public AbstractStructureBuilder getStructureBuilder() {
         return sb;
     }
 }

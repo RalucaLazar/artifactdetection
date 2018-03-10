@@ -3,7 +3,7 @@ package entity;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
-public class Segment extends AbstractSegment{
+public class Segment extends AbstractSegment implements Comparable{
 
 	private static final long serialVersionUID = 1L;
 	private int channelNr;
@@ -79,5 +79,9 @@ public class Segment extends AbstractSegment{
 		}
 		return true;
 	}
-	
+
+	@Override
+	public int compareTo(Object o) {
+		return 0;
+	}
 }

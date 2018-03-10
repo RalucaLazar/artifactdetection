@@ -3,7 +3,7 @@ package entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultiChannelSegment extends AbstractSegment{
+public class MultiChannelSegment extends AbstractSegment implements Comparable{
 
 	private static final long serialVersionUID = 1L;
 	private List<Segment> segments; 
@@ -54,5 +54,9 @@ public class MultiChannelSegment extends AbstractSegment{
 		}
 		return ResultType.BRAIN_SIGNAL;
 	}
-	
+
+	@Override
+	public int compareTo(Object o) {
+		return 0;
+	}
 }

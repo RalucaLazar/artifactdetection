@@ -143,7 +143,7 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 				int nrChannel = channelIdx + regionIdx * 32;
 //				logger.info(channelIdx + " " + regionIdx + " "
 //						+ nrChannel);
-				if (nrChannel >= 72) {
+//				if (nrChannel >= 72) {
 					SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(
 							nrChannel,inputSegmentsFilename);
 					List<Segment> testSegm = provider
@@ -156,8 +156,7 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 						SimpleSegmentViewSceneMaker sm = new SimpleSegmentViewSceneMaker(stage, testSegm, 0);
 						stage.setScene(sm.makeScene());
 					}
-				}
-				else errorLabel.setText("Channel not available!");
+//				}else errorLabel.setText("Channel not available!");
 			}
 		});
 	}

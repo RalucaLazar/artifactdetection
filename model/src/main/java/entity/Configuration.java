@@ -6,6 +6,7 @@ public interface Configuration {
     public static final double RATE = (double) 512 / 1000; //512 sampling freq
     public static final String PROJECT_PATH = "D:\\LICENTA\\artifactdetection";
     public static final String RESOURCES_PATH = PROJECT_PATH + "/service/src/main/resources";
+//    String RESOURCES_PATH = "D:\\LICENTA\\project_data";
     public static final String RESULTS_PATH = PROJECT_PATH + "/results";
     public static final int MAX_INDEX = 238000;
     public static final String ARFF_TRAIN_NAME = RESULTS_PATH + "/WekaTrainInput.arff";
@@ -19,5 +20,6 @@ public interface Configuration {
     public static final String MULTI_SEGMENTS_PATH = RESULTS_PATH + "/MultiSegments";
     String BINARY_INPUT_FILES = RESOURCES_PATH + "/binary_data";
     String TXT_INPUT_FILES = RESOURCES_PATH + "/txt_data";
+    String INPUT_SEGMENTS_FILENAME = RESULTS_PATH + "/All_Segments.ser";
 
 }

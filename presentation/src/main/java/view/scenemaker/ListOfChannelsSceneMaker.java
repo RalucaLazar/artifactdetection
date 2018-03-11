@@ -1,5 +1,6 @@
 package view.scenemaker;
 
+import entity.Configuration;
 import entity.Segment;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -37,6 +38,7 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 
 	public ListOfChannelsSceneMaker(Stage stage) {
 		super(stage);
+		inputSegmentsFilename = Configuration.INPUT_SEGMENTS_FILENAME;
 	}
 
 	// !!!!! ADDED !!!!!

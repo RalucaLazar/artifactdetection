@@ -19,7 +19,7 @@ public abstract class AbstractStructureBuilder {
 
     AbstractStructureBuilder() {
         ArtifactsLabelsExtractor artifactsLabelsExtractor = new ArtifactsLabelsExtractor();
-        //artifactsStructures = artifactsLabelsExtractor.parseLabelsDirectory(Configuration.RESOURCES_PATH+ "/labels");
+        artifactsStructures = artifactsLabelsExtractor.parseLabelsDirectory(Configuration.RESOURCES_PATH+ "/labels");
     }
 
     public abstract void buildDataStructures(double[] data, int iter, int localIndex, int channel, int type);
@@ -91,25 +91,25 @@ public abstract class AbstractStructureBuilder {
     public ResultType computeCorrectType(int startIndex, int channel) {
         int endIndex = startIndex + Configuration.WINDOW_SIZE;
         Range<Integer> segmentRange = Range.closed(startIndex, endIndex);
-        if (ArtifactType.REJECT.isSuitableForType(channel)) {
-            ArtifactsStructure structure = artifactsStructures.get(ArtifactType.REJECT);
-            if (ArtifactType.REJECT.isArtifact(segmentRange, structure.getRanges()) == true) {
-                return null;
-            }
-        }
-        if (ArtifactType.MUSCLE_C.isSuitableForType(channel)) {
-            ArtifactsStructure structure = artifactsStructures.get(ArtifactType.MUSCLE_C);
-            Boolean result = ArtifactType.MUSCLE_C.isArtifact(segmentRange, structure.getRanges());
-            if (result == null) {
-                return null;
-            }
-            if (result) {
-                return ResultType.MUSCLE;
-            }
-        }
-        if (ArtifactType.OCCULAR.isSuitableForType(channel)) {
-            ArtifactsStructure structure = artifactsStructures.get(ArtifactType.OCCULAR);
-            Boolean result = ArtifactType.OCCULAR.isArtifact(segmentRange, structure.getRanges());
+//        if (ArtifactType.REJECT.isSuitableForType(channel)) {
+//            ArtifactsStructure structure = artifactsStructures.get(ArtifactType.REJECT);
+//            if (ArtifactType.REJECT.isArtifact(segmentRange, structure.getRanges()) == true) {
+//                return null;
+//            }
+//        }
+//        if (ArtifactType.MUSCLE_F.isSuitableForType(channel)) {
+//            ArtifactsStructure structure = artifactsStructures.get(ArtifactType.MUSCLE_F);
+//            Boolean result = ArtifactType.MUSCLE_F.isArtifact(segmentRange, structure.getRanges());
+//            if (result == null) {
+//                return null;
+//            }
+//            if (result) {
+//                return ResultType.MUSCLE;
+//            }
+//        }
+        if (ArtifactType.OCULAR_F.isSuitableForType(channel)) {
+            ArtifactsStructure structure = artifactsStructures.get(ArtifactType.OCULAR_F);
+            Boolean result = ArtifactType.OCULAR_F.isArtifact(segmentRange, structure.getRanges());
             if (result == null) {
                 return null;
             }
@@ -119,18 +119,30 @@ public abstract class AbstractStructureBuilder {
                 return ResultType.BRAIN_SIGNAL;
             }
         }
-        if (ArtifactType.MUSCLE_D.isSuitableForType(channel)) {
-            ArtifactsStructure structure = artifactsStructures.get(ArtifactType.MUSCLE_D);
-            Boolean result = ArtifactType.MUSCLE_D.isArtifact(segmentRange, structure.getRanges());
-            if (result == null) {
-                return null;
-            }
-            if (result) {
-                return ResultType.MUSCLE;
-            } else {
-                return ResultType.BRAIN_SIGNAL;
-            }
-        }
+//        if (ArtifactType.MUSCLE_T.isSuitableForType(channel)) {
+//            ArtifactsStructure structure = artifactsStructures.get(ArtifactType.MUSCLE_T);
+//            Boolean result = ArtifactType.MUSCLE_T.isArtifact(segmentRange, structure.getRanges());
+//            if (result == null) {
+//                return null;
+//            }
+//            if (result) {
+//                return ResultType.MUSCLE;
+//            } else {
+//                return ResultType.BRAIN_SIGNAL;
+//            }
+//        }
+//        if (ArtifactType.MUSCLE_O.isSuitableForType(channel)) {
+//            ArtifactsStructure structure = artifactsStructures.get(ArtifactType.MUSCLE_O);
+//            Boolean result = ArtifactType.MUSCLE_O.isArtifact(segmentRange, structure.getRanges());
+//            if (result == null) {
+//                return null;
+//            }
+//            if (result) {
+//                return ResultType.MUSCLE;
+//            } else {
+//                return ResultType.BRAIN_SIGNAL;
+//            }
+//        }
         return null;
     }
 }

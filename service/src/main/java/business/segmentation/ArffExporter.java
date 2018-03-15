@@ -1,13 +1,10 @@
 package business.segmentation;
 
-import business.features.export.ArffGenerator;
 import business.features.export.SegmentSerializer;
 import com.google.common.collect.Lists;
 import entity.AbstractSegment;
 import entity.Configuration;
-import entity.ResultType;
 import entity.SegmentRepository;
-import utils.SegmentDeserializer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -76,62 +73,70 @@ public class ArffExporter {
 //		featureFilter.filter(occularRepo);
 //		featureFilter.filter(occularTest);
 
-        List<AbstractSegment> cleaned = new ArrayList<>();
+        DataBalancer dBalancer = new DataBalancer();
+        List<AbstractSegment> trainSegments = dBalancer
+                .undersample(this.cleanRepo, this.occularRepo);
+//
+//        SegmentRepository trainSegmRepo = new SegmentRepository("TrainData");
+//        trainSegmRepo.setSegments(trainSegments);
+//        SegmentExporter.exportAll(Collections.singletonList(trainSegmRepo));
 
-        for (AbstractSegment segm : this.cleanRepo.getSegments()) {
-            if (segm.getCorrectType().equals(ResultType.BRAIN_SIGNAL)) {
-                cleaned.add(segm);
-            }
-        }
+//        List<AbstractSegment> cleaned = new ArrayList<>();
+//
+//        for (AbstractSegment segm : this.cleanRepo.getSegments()) {
+//            if (segm.getCorrectType().equals(ResultType.BRAIN_SIGNAL)) {
+//                cleaned.add(segm);
+//            }
+//        }
+//
+//        List<AbstractSegment> all = new ArrayList<>();
+//
+//        all.addAll(cleaned);
+//        all.addAll(this.occularRepo.getSegments());
+//        all.addAll(this.muscleRepo.getSegments());
+//
+//        Collections.shuffle(all);
 
-        List<AbstractSegment> all = new ArrayList<>();
 
-        all.addAll(cleaned);
-        all.addAll(this.occularRepo.getSegments());
-        //all.addAll(this.muscleRepo.getSegments());
-
-        Collections.shuffle(all);
-
-
-        ArffGenerator arffGenerator = new ArffGenerator(Configuration.ARFF_TRAIN_NAME);
-
-        for (AbstractSegment segment : all) {
-            arffGenerator.writeSegmentFeatures(segment.getFeatures(), segment.getCorrectType());
-//			if(segment.getCorrectType().equals(ResultType.BRAIN_SIGNAL)){
-//					Segment segment2 = (Segment)segment;
-//					//System.out.println(segment2.getValuesToString());
-//				
-//			}
-        }
+//        ArffGenerator arffGenerator = new ArffGenerator(Configuration.ARFF_TRAIN_NAME);
+//
+//        for (AbstractSegment segment : all) {
+//            arffGenerator.writeSegmentFeatures(segment.getFeatures(), segment.getCorrectType());
+////			if(segment.getCorrectType().equals(ResultType.BRAIN_SIGNAL)){
+////					Segment segment2 = (Segment)segment;
+////					//System.out.println(segment2.getValuesToString());
+////
+////			}
+//        }
         SegmentRepository trainsrep = new SegmentRepository("AllForTrain");
-        trainsrep.setSegments(all);
+        trainsrep.setSegments(trainSegments);
         SegmentSerializer.serialize(trainsrep, Configuration.RESULTS_PATH);
 
         List<AbstractSegment> testSegm = new ArrayList<>();
         testSegm.addAll(this.cleanTest.getSegments());
-        //testSegm.addAll(this.muscleTest.getSegments());
+//        testSegm.addAll(this.muscleTest.getSegments());
         testSegm.addAll(this.occularTest.getSegments());
         testSegm.addAll(this.cleanEval.getSegments());
-        //testSegm.addAll(this.muscleEval.getSegments());
+//        testSegm.addAll(this.muscleEval.getSegments());
         testSegm.addAll(this.occularEval.getSegments());
         Collections.shuffle(testSegm);
-        ArffGenerator arffGenerator2 = new ArffGenerator(Configuration.ARFF_TEST_NAME);
-
-        for (AbstractSegment segment : testSegm) {
-            arffGenerator2.writeSegmentFeatures(segment.getFeatures(), segment.getCorrectType());
-        }
+//        ArffGenerator arffGenerator2 = new ArffGenerator(Configuration.ARFF_TEST_NAME);
+//
+//        for (AbstractSegment segment : testSegm) {
+//            arffGenerator2.writeSegmentFeatures(segment.getFeatures(), segment.getCorrectType());
+//        }
         SegmentRepository teSegmentRepository = new SegmentRepository("AllForTest");
         teSegmentRepository.setSegments(testSegm);
         SegmentSerializer.serialize(teSegmentRepository, Configuration.RESULTS_PATH);
-//		
-//		DataBalancer dBalancer=new DataBalancer();
-//		List<AbstractSegment> trainSegments = dBalancer.undersample(cleanRepo, occularRepo, muscleRepo);
-//		
-//		ArffGenerator arffGenerator3 = new ArffGenerator(Configuration.RESULTS_PATH+"/WekaFullTrainInput.arff");
-//		for (AbstractSegment abstractSegment : trainSegments) {
-//			arffGenerator3.writeSegmentFeatures(abstractSegment.getFeatures(), abstractSegment.getCorrectType());
-//		}
-//		
+//
+//        DataBalancer dBalancer = new DataBalancer();
+//        List<AbstractSegment> trainSegments = dBalancer.undersample(cleanRepo, occularRepo);
+//
+//        ArffGenerator arffGenerator3 = new ArffGenerator(Configuration.RESULTS_PATH + "/WekaFullTrainInput.arff");
+//        for (AbstractSegment abstractSegment : trainSegments) {
+//            arffGenerator3.writeSegmentFeatures(abstractSegment.getFeatures(), abstractSegment.getCorrectType());
+//        }
+
 
     }
 

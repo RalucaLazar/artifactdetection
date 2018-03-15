@@ -11,26 +11,26 @@ import java.util.List;
 public class StructureBuilder extends AbstractStructureBuilder {
 
     private SegmentRepository occularStructTrain;
-    private SegmentRepository muscleStructTrain;
+//    private SegmentRepository muscleStructTrain;
     private SegmentRepository brainStructTrain;
     private SegmentRepository occularStructTest;
-    private SegmentRepository muscleStructTest;
+//    private SegmentRepository muscleStructTest;
     private SegmentRepository brainStructTest;
     private SegmentRepository occularStructEval;
-    private SegmentRepository muscleStructEval;
+//    private SegmentRepository muscleStructEval;
     private SegmentRepository brainStructEval;
 
     public StructureBuilder() {
         super();
         //dataGen = new DataGeneratorForDecisionTree();
         brainStructEval = new SegmentRepository("Clean_Eval");
-        muscleStructEval = new SegmentRepository("Muscle_Eval");
+//        muscleStructEval = new SegmentRepository("Muscle_Eval");
         occularStructEval = new SegmentRepository("Occular_Eval");
         brainStructTest = new SegmentRepository("Clean_Test");
-        muscleStructTest = new SegmentRepository("Muscle_Test");
+//        muscleStructTest = new SegmentRepository("Muscle_Test");
         occularStructTest = new SegmentRepository("Occular_Test");
         brainStructTrain = new SegmentRepository("Clean_Train");
-        muscleStructTrain = new SegmentRepository("Muscle_Train");
+//        muscleStructTrain = new SegmentRepository("Muscle_Train");
         occularStructTrain = new SegmentRepository("Occular_Train");
     }
 
@@ -65,19 +65,19 @@ public class StructureBuilder extends AbstractStructureBuilder {
                         break;
                 }
                 break;
-            case MUSCLE:
-                switch (type) {
-                    case 1:
-                        muscleStructTrain.addSegment(segment);
-                        break;
-                    case 2:
-                        muscleStructTest.addSegment(segment);
-                        break;
-                    default:
-                        muscleStructEval.addSegment(segment);
-                        break;
-                }
-                break;
+//            case MUSCLE:
+//                switch (type) {
+//                    case 1:
+//                        muscleStructTrain.addSegment(segment);
+//                        break;
+//                    case 2:
+//                        muscleStructTest.addSegment(segment);
+//                        break;
+//                    default:
+//                        muscleStructEval.addSegment(segment);
+//                        break;
+//                }
+//                break;
             default:
                 switch (type) {
                     case 1:
@@ -95,7 +95,7 @@ public class StructureBuilder extends AbstractStructureBuilder {
     }
 
     public List<SegmentRepository> getSerializableStructures() {
-        return Lists.newArrayList(occularStructTrain, occularStructEval, occularStructTest, muscleStructTrain, muscleStructEval, muscleStructTest, brainStructTrain, brainStructEval, brainStructTest);
+        return Lists.newArrayList(occularStructTrain, occularStructEval, occularStructTest, brainStructTrain, brainStructEval, brainStructTest);
 
     }
 }

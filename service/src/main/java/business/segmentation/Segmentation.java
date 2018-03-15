@@ -17,16 +17,13 @@ public class Segmentation extends AbstractSegmentation {
 
     protected void parseFile(File file, int index) {
         int channel = getChannelFromFile(file.getName());
-        /*if(channel<65){
-            return;
-		}*/
-//		logger.info("Fisierul channel "+channel);
+        System.out.println(channel);
         List<Double> data = new ArrayList<>();
         List<Double> testData = new ArrayList<>();
         List<Double> evalData = new ArrayList<>();
         int count = 0;
         try (Scanner scan = new Scanner(file)) {
-            while (scan.hasNextDouble()) {
+            while (scan.hasNextDouble() && count<80000) {
                 count++;
                 if (count <= Configuration.TRAIN_MAX_INDEX) {
                     data.add(scan.nextDouble());

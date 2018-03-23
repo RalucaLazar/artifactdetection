@@ -2,34 +2,27 @@ package entity;
 
 import com.google.common.collect.Range;
 
-import java.util.Arrays;
 import java.util.List;
 
 public enum ArtifactType {
 
-    OCULAR_F(RegionNew.F),
-    MUSCLE_F(RegionNew.F),
-    MUSCLE_O(RegionNew.O),
-    MUSCLE_T(RegionNew.T);
-
-    private RegionNew regionNew;
-
-    private ArtifactType(RegionNew regionNew) {
-        this.regionNew = regionNew;
-    }
-
-    public List<Integer> getChannels() {
-        return regionNew.getList();
-    }
+    OCULAR,
+    MUSCLE;
 
     public boolean isSuitableForType(int channel) {
-        for (int channel1 : regionNew.getList()) {
-            if (channel == channel1) return true;
+        if (RegionNew.getRegionByChannel(channel) == null) {
+            //the channel is not included in any of the five regions (F, T, P, O, C)
+            //it is in the NON region
+            return false;
         }
-        return false;
+        return true;
     }
 
     public Boolean isArtifact(Range<Integer> segmentRange, List<Range<Integer>> artifactRanges) {
+        if (artifactRanges == null) {
+            // no artifacts (OCULAR or MUSCLE) for the segment's channel
+            return false;
+        }
         if (disjunctiveIntersectionCondition(segmentRange, artifactRanges)) {
             return false;
         }

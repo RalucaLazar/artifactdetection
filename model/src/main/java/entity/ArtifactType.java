@@ -10,12 +10,9 @@ public enum ArtifactType {
     MUSCLE;
 
     public boolean isSuitableForType(int channel) {
-        if (RegionNew.getRegionByChannel(channel) == null) {
-            //the channel is not included in any of the five regions (F, T, P, O, C)
-            //it is in the NON region
-            return false;
-        }
-        return true;
+        //the channel is not included in any of the five regions (F, T, P, O, C)
+        //it is in the NON region
+        return RegionNew.getRegionByChannel(channel) != null;
     }
 
     public Boolean isArtifact(Range<Integer> segmentRange, List<Range<Integer>> artifactRanges) {
@@ -35,7 +32,7 @@ public enum ArtifactType {
                 }
                 reject = true;
             } catch (IllegalArgumentException exception) {
-
+                exception.printStackTrace();
             }
         }
         if (reject) {

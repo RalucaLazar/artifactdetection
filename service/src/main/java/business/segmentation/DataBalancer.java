@@ -9,23 +9,23 @@ import java.util.List;
 
 public class DataBalancer {
     //add SegmentRepository muscular as parameter
-    public List<AbstractSegment> undersample(SegmentRepository clean, SegmentRepository occular) {
+    public List<AbstractSegment> undersample(SegmentRepository clean, SegmentRepository occular, SegmentRepository muscular) {
         int szOccular = occular.getSegments().size();
-//        int szMuscular = muscular.getSegments().size();
+        int szMuscular = muscular.getSegments().size();
         List<AbstractSegment> resultList = new ArrayList<>();
-//        if (szOccular < szMuscular) {
-//            resultList.addAll(occular.getSegments());
-//            resultList.addAll(pickRandomly(szOccular, muscular.getSegments()));
-//            resultList.addAll(pickRandomly(szOccular, clean.getSegments()));
-//        } else if (szOccular > szMuscular) {
-//            resultList.addAll(muscular.getSegments());
-//            resultList.addAll(pickRandomly(szMuscular, occular.getSegments()));
-//            resultList.addAll(pickRandomly(szMuscular, clean.getSegments()));
-//        } else {
-//            resultList.addAll(muscular.getSegments());
-        resultList.addAll(occular.getSegments());
-        resultList.addAll(pickRandomly(szOccular, clean.getSegments()));
-//        }
+        if (szOccular < szMuscular) {
+            resultList.addAll(occular.getSegments());
+            resultList.addAll(pickRandomly(szOccular, muscular.getSegments()));
+            resultList.addAll(pickRandomly(szOccular, clean.getSegments()));
+        } else if (szOccular > szMuscular) {
+            resultList.addAll(muscular.getSegments());
+            resultList.addAll(pickRandomly(szMuscular, occular.getSegments()));
+            resultList.addAll(pickRandomly(szMuscular, clean.getSegments()));
+        } else {
+            resultList.addAll(muscular.getSegments());
+            resultList.addAll(occular.getSegments());
+            resultList.addAll(pickRandomly(szMuscular, clean.getSegments()));
+        }
         Collections.shuffle(resultList);
         return resultList;
     }

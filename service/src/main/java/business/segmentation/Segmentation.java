@@ -15,7 +15,7 @@ public class Segmentation extends AbstractSegmentation {
         super(new StructureBuilder());
     }
 
-    protected void parseFile(File file, int index) {
+    public static void parseFile(File file, int index) {
         int channel = getChannelFromFile(file.getName());
         System.out.println(channel);
         List<Double> data = new ArrayList<>();
@@ -23,7 +23,8 @@ public class Segmentation extends AbstractSegmentation {
         List<Double> evalData = new ArrayList<>();
         int count = 0;
         try (Scanner scan = new Scanner(file)) {
-            while (scan.hasNextDouble() && count<80000) {
+            // & count < see nr. of values
+            while (scan.hasNextDouble()) {
                 count++;
                 if (count <= Configuration.TRAIN_MAX_INDEX) {
                     data.add(scan.nextDouble());
@@ -38,9 +39,7 @@ public class Segmentation extends AbstractSegmentation {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-//		logger.info("Nr valori train "+data.size());
-//		logger.info("Nr valori test "+testData.size());
-//		logger.info("Nr valori eval "+evalData.size());
+
         segment(data, index, channel, 1);
         segment(testData, index, channel, 2);
         segment(evalData, index, channel, 3);

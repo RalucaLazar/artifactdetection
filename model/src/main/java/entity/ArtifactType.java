@@ -16,7 +16,7 @@ public enum ArtifactType {
     }
 
     public Boolean isArtifact(Range<Integer> segmentRange, List<Range<Integer>> artifactRanges) {
-        if (artifactRanges == null) {
+        if (artifactRanges == null || segmentRange == null || artifactRanges.isEmpty()) {
             // no artifacts (OCULAR or MUSCLE) for the segment's channel
             return false;
         }
@@ -32,7 +32,7 @@ public enum ArtifactType {
                 }
                 reject = true;
             } catch (IllegalArgumentException exception) {
-                exception.printStackTrace();
+//                exception.printStackTrace();
             }
         }
         if (reject) {

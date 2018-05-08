@@ -24,7 +24,7 @@ public class DataBalancer {
         } else {
             resultList.addAll(muscular.getSegments());
             resultList.addAll(occular.getSegments());
-            resultList.addAll(pickRandomly(szMuscular, clean.getSegments()));
+            resultList.addAll(pickRandomly(szOccular, clean.getSegments()));
         }
         Collections.shuffle(resultList);
         return resultList;

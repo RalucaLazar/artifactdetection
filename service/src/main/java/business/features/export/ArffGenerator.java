@@ -43,7 +43,7 @@ public class ArffGenerator {
                 data += writeAttribute(feature, RegionNew.getRegionByIndex(i));
             }
         }
-        data += "@attribute 'class' {" + ResultType.BRAIN_SIGNAL + ", " + ResultType.MUSCLE + ", " + ResultType.OCCULAR + "}\n";
+        data += "@attribute 'class' {" + ResultType.BRAIN_SIGNAL + ", " + ResultType.MUSCLE + ", " + ResultType.OCULAR + "}\n";
         data += "@data\n";
         return data;
     }
@@ -53,7 +53,7 @@ public class ArffGenerator {
         for (FeatureType feature : FeatureType.values()) {
             data += writeAttribute(feature);
         }
-        data += "@attribute 'class' {" + ResultType.BRAIN_SIGNAL + ", " + ResultType.MUSCLE + ", " + ResultType.OCCULAR + "}\n";
+        data += "@attribute 'class' {" + ResultType.BRAIN_SIGNAL + ", " /*+ ResultType.MUSCLE + ", "*/ + ResultType.OCULAR + "}\n";
         data += "@data\n";
         return data;
     }

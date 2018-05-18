@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public abstract class AbstractStructureBuilder {
 
     //	protected Logger logger = LoggerUtil.logger(StructureBuilder.class);
-    protected Map<ArtifactType, ArtifactsStructure> artifactsStructures;
+    private Map<ArtifactType, ArtifactsStructure> artifactsStructures;
 
     AbstractStructureBuilder() {
         ArtifactsLabelsExtractor artifactsLabelsExtractor = new ArtifactsLabelsExtractor();
@@ -91,6 +91,17 @@ public abstract class AbstractStructureBuilder {
     public ResultType computeCorrectType(int startIndex, int channel) {
         int endIndex = startIndex + Configuration.WINDOW_SIZE;
         Range<Integer> segmentRange = Range.closed(startIndex, endIndex);
+
+        if (ArtifactType.NOISE.isSuitableForType(channel)) {
+            ArtifactsStructure noiseStructure = artifactsStructures.get(ArtifactType.NOISE);
+            Boolean noise = ArtifactType.NOISE.isArtifact(segmentRange, noiseStructure.getRanges().get(channel));
+            if (noise == null) {
+                return null;
+            }
+            if (noise) {
+                return null;
+            }
+        }
 
         if (ArtifactType.MUSCLE.isSuitableForType(channel)) {
             ArtifactsStructure muscleStructure = artifactsStructures.get(ArtifactType.MUSCLE);

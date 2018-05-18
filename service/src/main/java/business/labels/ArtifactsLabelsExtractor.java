@@ -1,6 +1,7 @@
 package business.labels;
 
 import com.google.common.collect.Range;
+import com.sun.xml.internal.ws.util.StringUtils;
 import entity.ArtifactType;
 import entity.ArtifactsStructure;
 import entity.Configuration;
@@ -17,22 +18,32 @@ public class ArtifactsLabelsExtractor {
     public Map<ArtifactType, ArtifactsStructure> parseLabelsDirectory(String directoryName) {
         File folder = new File(directoryName);
         Map<ArtifactType, ArtifactsStructure> artifactsStructures = new HashMap<>();
+
         Map<Integer, List<Range<Integer>>> ocularMap = new HashMap<>();
         Map<Integer, List<Range<Integer>>> muscleMap = new HashMap<>();
-        for (final File fileEntry : folder.listFiles()) {
+        Map<Integer, List<Range<Integer>>> noiseMap = new HashMap<>();
+
+        for (final File fileEntry : Objects.requireNonNull(folder.listFiles())) {
             if (!fileEntry.isDirectory()) {
-                String fileName =fileEntry.getName();
+                String fileName = fileEntry.getName();
                 List<Range<Integer>> ranges = parseFile(fileEntry);
-                if (ArtifactType.OCULAR.equals(getArtifactTypeFromFile(fileName))) {
-                    ocularMap.put(getChannelFromFile(fileName), ranges);
-                } else {
-                    //MUSCLE
-                    muscleMap.put(getChannelFromFile(fileName), ranges);
+
+                switch (getArtifactTypeFromFile(fileName)) {
+                    case OCULAR:
+                        ocularMap.put(getChannelFromFile(fileName), ranges);
+                        break;
+                    case MUSCLE:
+                        muscleMap.put(getChannelFromFile(fileName), ranges);
+                        break;
+                    case NOISE:
+                        noiseMap.put(getChannelFromFile(fileName), ranges);
+                        break;
                 }
             }
         }
         artifactsStructures.put(ArtifactType.OCULAR, new ArtifactsStructure(ArtifactType.OCULAR, ocularMap));
         artifactsStructures.put(ArtifactType.MUSCLE, new ArtifactsStructure(ArtifactType.MUSCLE, muscleMap));
+        artifactsStructures.put(ArtifactType.NOISE, new ArtifactsStructure(ArtifactType.NOISE, noiseMap));
         return artifactsStructures;
     }
 
@@ -62,11 +73,12 @@ public class ArtifactsLabelsExtractor {
     // Labels file name: TYPE_CHANNEL.txt
 
     private ArtifactType getArtifactTypeFromFile(String file) {
-        return ArtifactType.valueOf(file.split("_")[0]);
+        return ArtifactType.valueOf(file.substring(0, file.indexOf("_")));
     }
 
     private int getChannelFromFile(String file) {
         String channel = file.split("_")[1];
-        return Integer.parseInt(channel.substring(0, channel.length() - 4));
+        String ch = channel.substring(channel.indexOf("_") + 1, channel.lastIndexOf("."));
+        return Integer.parseInt(ch);
     }
 }

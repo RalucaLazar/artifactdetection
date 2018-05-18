@@ -4,6 +4,7 @@ import classifier.Classifier;
 import classifier.decisiontree.DecisionTreeClassifier;
 import classifier.knn.KnnClassifier;
 import classifier.svm.SvmClassesClassifier;
+import entity.Configuration;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -18,11 +19,11 @@ import java.io.File;
 @SuppressWarnings("restriction")
 public abstract class AbstractSceneMaker {
 
-    protected final static int LENGTH_STAGE = 950;
-    protected final static int HIGH_STAGE = 650;
+    protected final static int LENGTH_STAGE = 1000;
+    protected final static int HIGH_STAGE = 700;
     protected Stage stage;
 //    Logger logger = LoggerUtil.logger(getClass());
-
+    private static String inputFilesPath="";
 
     public AbstractSceneMaker(Stage stage) {
         this.stage = stage;
@@ -38,6 +39,14 @@ public abstract class AbstractSceneMaker {
         return HIGH_STAGE;
     }
 
+    public static String getInputFilesPath(){
+      return inputFilesPath;
+    }
+
+    public static void setInputFilesPath(String path){
+        inputFilesPath = path;
+    }
+
     protected MenuBar createMenuBar() {
         MenuBar menuBar = new MenuBar();
 
@@ -49,17 +58,14 @@ public abstract class AbstractSceneMaker {
         MenuItem menuItem11 = new MenuItem("Load from ...");
         menuItem11.setOnAction(e -> {
             JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int returnValue = fileChooser.showOpenDialog(null);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-//                try {
-//                    java.awt.Desktop.getDesktop().open(selectedFile);
-//                } catch (IOException e1) {
-//                    e1.printStackTrace();
-//                }
-                String inputSegmentsFilename = selectedFile.getAbsolutePath();
-                ListOfChannelsSceneMaker sm = new ListOfChannelsSceneMaker(
-                        stage, inputSegmentsFilename);
+                File selectedFolder = fileChooser.getSelectedFile();
+                String path = selectedFolder.getAbsolutePath();
+                setInputFilesPath(path);
+                System.out.println(path);
+                ListOfChannelsSceneMaker sm = new ListOfChannelsSceneMaker(stage);
                 stage.setScene(sm.makeScene());
             }
         });

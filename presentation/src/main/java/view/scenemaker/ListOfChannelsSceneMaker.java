@@ -55,6 +55,7 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 		listBox.setAlignment(Pos.BASELINE_CENTER);
 		hBox.getChildren().addAll(createMenuBar(), getInitialPane());
 		hBox.setMinWidth(stage.getWidth());
+//		hBox.setMinHeight(stage.getHeight());
 		hBox.setAlignment(Pos.CENTER);
 		Scene scene = new Scene(hBox, LENGTH_STAGE, HIGH_STAGE);
 		scene.getStylesheets().add("file:src/resources/stylesheet.css");
@@ -74,8 +75,8 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 
 		Image image = new Image("file:src/resources/casca.png");
 		ImageView iv = new ImageView();
-		iv.setFitWidth(600);
-		iv.setFitHeight(575);
+		iv.setFitWidth(580);
+		iv.setFitHeight(620);
 		iv.setImage(image);
 
 		rootB.getChildren().addAll(hboxB, iv);

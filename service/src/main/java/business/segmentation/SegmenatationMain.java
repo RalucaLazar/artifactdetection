@@ -17,9 +17,9 @@ public class SegmenatationMain {
     public static void main(String[] args) throws IOException {
 
 //        // use this part for segmentation
-        AbstractSegmentation segmentation = new Segmentation();
-        List<SegmentRepository> repositories = segmentation.parseDataDirectory(new File(Configuration.TXT_INPUT_FILES));
-        SegmentExporter.exportAll(repositories);
+//        AbstractSegmentation segmentation = new Segmentation();
+//        List<SegmentRepository> repositories = segmentation.parseDataDirectory(new File(Configuration.TXT_INPUT_FILES));
+//        SegmentExporter.exportAll(repositories);
 
         // use this part to compute the last 2 features (pearson, max correlation)
 //        ArffExporter arffExporter = new ArffExporter();
@@ -40,15 +40,6 @@ public class SegmenatationMain {
 //        testRepo.setSegments(testSegments);
 //        System.out.println("Test segments: " + testSegments.size());
 //        SegmentSerializer.serialize(testRepo, Configuration.RESULTS_PATH);
-
-//        //TEST
-//        SegmentRepository repository = SegmentDeserializer.deserializeSegmentsFromFile("/home/raluca/work/artifactdetection/results/Test.ser");
-//        List<AbstractSegment> segments = new ArrayList<>(repository.getSegments());
-//        Collections.shuffle(segments);
-//        ArffGenerator arffGenerator7 = new ArffGenerator(Configuration.ARFF_TEST_NAME);
-//        for (AbstractSegment segment : segments) {
-//            arffGenerator7.writeSegmentFeatures(segment.getFeatures(), segment.getCorrectType());
-//        }
 
 //        List<AbstractSegment> cleanSegments = arffExporter.getCleanRepo().getSegments();
 //
@@ -104,6 +95,9 @@ public class SegmenatationMain {
 //        train5Repo.setSegments(train5);
 //        SegmentSerializer.serialize(train5Repo, Configuration.RESULTS_PATH);
 //        dataBalancer("/home/raluca/work/artifactdetection/results/Train5.ser");
+
+        // use this part for generating arff
+//        arffExporter.exportArff();
     }
 
     private static List<AbstractSegment> combineSers(SegmentRepository firstRepository, SegmentRepository secondRepository) {
@@ -131,7 +125,7 @@ public class SegmenatationMain {
         for (AbstractSegment oversampledSegment : oversampledSegments) {
             if (oversampledSegment.getCorrectType().equals(ResultType.BRAIN_SIGNAL)) {
                 cleanR.addSegment(oversampledSegment);
-            } else if (oversampledSegment.getCorrectType().equals(ResultType.OCCULAR)) {
+            } else if (oversampledSegment.getCorrectType().equals(ResultType.OCULAR)) {
                 ocularR.addSegment(oversampledSegment);
             } else {
                 muscleR.addSegment(oversampledSegment);

@@ -22,8 +22,11 @@ public abstract class AbstractSceneMaker {
     protected final static int LENGTH_STAGE = 1000;
     protected final static int HIGH_STAGE = 700;
     protected Stage stage;
-//    Logger logger = LoggerUtil.logger(getClass());
-    private static String inputFilesPath="";
+    private Menu menu1;
+    private Menu menu2;
+    private Menu menu3;
+    //    Logger logger = LoggerUtil.logger(getClass());
+    private static String inputFilesPath = "";
 
     public AbstractSceneMaker(Stage stage) {
         this.stage = stage;
@@ -39,22 +42,25 @@ public abstract class AbstractSceneMaker {
         return HIGH_STAGE;
     }
 
-    public static String getInputFilesPath(){
-      return inputFilesPath;
+    public static String getInputFilesPath() {
+        return inputFilesPath;
     }
 
-    public static void setInputFilesPath(String path){
+    public static void setInputFilesPath(String path) {
         inputFilesPath = path;
     }
 
     protected MenuBar createMenuBar() {
         MenuBar menuBar = new MenuBar();
 
-        Menu menu1 = new Menu("Load file");
-        Menu menu2 = new Menu("Visualize EEG");
-        Menu menu3 = new Menu("Extract artefact from EEG");
+        menu1 = new Menu("Load file");
+        menu2 = new Menu("Visualize EEG");
+        menu3 = new Menu("Extract artefact from EEG");
 
-        // !!!!!!!!!! MODIFIED !!!!!!!!!!
+        if (inputFilesPath.equals("")) {
+            disableButtons();
+        }
+
         MenuItem menuItem11 = new MenuItem("Load from ...");
         menuItem11.setOnAction(e -> {
             JFileChooser fileChooser = new JFileChooser();
@@ -64,7 +70,8 @@ public abstract class AbstractSceneMaker {
                 File selectedFolder = fileChooser.getSelectedFile();
                 String path = selectedFolder.getAbsolutePath();
                 setInputFilesPath(path);
-                System.out.println(path);
+                enableButtons();
+                System.out.println("Selected path: " + path);
                 ListOfChannelsSceneMaker sm = new ListOfChannelsSceneMaker(stage);
                 stage.setScene(sm.makeScene());
             }
@@ -170,4 +177,13 @@ public abstract class AbstractSceneMaker {
         return menuBar;
     }
 
+    private void disableButtons() {
+        menu2.setDisable(true);
+        menu3.setDisable(true);
+    }
+
+    private void enableButtons() {
+        menu2.setDisable(false);
+        menu3.setDisable(false);
+    }
 }

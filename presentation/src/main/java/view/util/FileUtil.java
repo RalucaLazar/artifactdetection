@@ -1,5 +1,7 @@
 package view.util;
 
+import view.scenemaker.AbstractSceneMaker;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,22 +11,26 @@ import java.util.*;
 
 public class FileUtil {
 
-    public static int freq;
+    private static int freq;
     public static Map<String, List<String>> regionsAndChannels = new TreeMap<>();
+    private String folderPath;
 
     public FileUtil() {
+        folderPath = AbstractSceneMaker.getInputFilesPath();
         computeRegions();
     }
 
-    public void computeRegions() {
+    private void computeRegions() {
         int line = 0;
-        File file = new File("/home/raluca/Documents/artefacte/EEG_depletie_part_1_2/2_06_11_2016/2_06_11_2016.txt");
+
+        File epdFile = getEpdFileFromPath(folderPath);
+        String fileName = getFileName(epdFile);
+        File txtFile = new File(folderPath + "/" + fileName + ".txt");
 
         try {
-            copyFileUsingJava7Files(new File("/home/raluca/Documents/artefacte/EEG_depletie_part_1_2/2_06_11_2016/2_06_11_2016.epd"),
-                    file);
+            copyFileUsingJava7Files(epdFile, txtFile);
 
-            FileReader fr = new FileReader(file);
+            FileReader fr = new FileReader(txtFile);
             BufferedReader br = new BufferedReader(fr);
 
             String sCurrentLine;
@@ -50,7 +56,26 @@ public class FileUtil {
             e.printStackTrace();
         }
 
-        deleteFile(file);
+        deleteFile(txtFile);
+    }
+
+    private String getFileName(File epdFile) {
+        String fileName = "";
+        if (epdFile != null) {
+            System.out.println(epdFile.getName());
+            String[] parts = epdFile.getName().split("\\.");
+            fileName = parts[0];
+        }
+        return fileName;
+    }
+
+    private File getEpdFileFromPath(String folderPath) {
+        File folder = new File(folderPath);
+        for (File fileEntry : Objects.requireNonNull(folder.listFiles())) {
+            if (fileEntry.getName().contains(".epd"))
+                return fileEntry;
+        }
+        return null;
     }
 
     private static void computeRegionMap(final String sCurrentLine) {
@@ -65,16 +90,6 @@ public class FileUtil {
         }
     }
 
-    private static String changeFileExtension(final String file) {
-        if (file.contains(".")) {
-            int index = file.indexOf(".");
-            String filename = file.substring(0, index);
-            return filename + ".txt";
-        } else {
-            return file;
-        }
-    }
-
     private static void copyFileUsingJava7Files(File source, File dest) throws IOException {
         Files.copy(source.toPath(), dest.toPath());
     }
@@ -83,7 +98,6 @@ public class FileUtil {
         try {
             file.delete();
         } catch (Exception e) {
-
             e.printStackTrace();
         }
     }

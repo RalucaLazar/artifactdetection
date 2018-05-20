@@ -2,6 +2,10 @@ package view.scenemaker;
 
 import entity.Configuration;
 import entity.Segment;
+import javafx.beans.binding.Bindings;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,33 +23,38 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import view.provider.SimpleChannelSegmentProvider;
+import view.util.FileUtil;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.util.List;
+
+import static view.util.FileUtil.regionsAndChannels;
 
 public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 
-	private static final int NR_CHANNELS = 128;
+    private static final int NR_CHANNELS = 128;
 //	Logger logger = LoggerUtil.logger(getClass());
 
-	protected Button[] btnChannels;
-	protected Label[] labelChannels;
-	protected Label errorLabel = new Label("");
-	protected ComboBox regionComboBox;
-	protected ComboBox channelComboBox;
-	final Button visualizeButton = new Button("Visualize!");
-	// !!!!!!! ADDED !!!!!
-	private String inputSegmentsFilename;
+    protected Button[] btnChannels;
+    protected Label[] labelChannels;
+    protected Label errorLabel = new Label("");
+    protected ComboBox regionComboBox;
+    protected ComboBox channelComboBox;
+    final Button visualizeButton = new Button("Visualize!");
+    // !!!!!!! ADDED !!!!!
+    private String inputSegmentsFilename;
 
-	public ListOfChannelsSceneMaker(Stage stage) {
-		super(stage);
-		inputSegmentsFilename = Configuration.INPUT_SEGMENTS_FILENAME;
-	}
+    public ListOfChannelsSceneMaker(Stage stage) {
+        super(stage);
+        inputSegmentsFilename = Configuration.INPUT_SEGMENTS_FILENAME;
+    }
 
-	// !!!!! ADDED !!!!!
-	public ListOfChannelsSceneMaker(Stage stage, String inputSegmentsFilename) {
-		super(stage);
-		this.inputSegmentsFilename = inputSegmentsFilename;
-	}
+    // !!!!! ADDED !!!!!
+    public ListOfChannelsSceneMaker(Stage stage, String inputSegmentsFilename) {
+        super(stage);
+        this.inputSegmentsFilename = inputSegmentsFilename;
+    }
 
 	@Override
 	public Scene makeScene() {
@@ -83,22 +92,31 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 		rootB.setSpacing(10);
 		rootB.setPadding(new Insets(10));
 
-		Label regionsLabel = new Label("Region ");
-		Label channelsLabel = new Label("Channel no ");
+        Label channelsLabel = new Label("Channel no ");
 
-		regionComboBox = new ComboBox();
-		regionComboBox.getItems().addAll("A", "B", "C", "D");
+        // used to populate the region/channel map
+        FileUtil fileUtil = new FileUtil();
 
-		// regionComboBox.setPromptText("A");
+        // regions
+        regionComboBox = new ComboBox();
+        regionComboBox.getItems().addAll(regionsAndChannels.keySet());
 
-		channelComboBox = new ComboBox();
+        channelComboBox = new ComboBox();
 
-		for (int i = 0; i < NR_CHANNELS / 4; i++) {
-			channelComboBox.getItems().add(i);
-		}
-		HBox channelsHBox = new HBox();
-		channelsHBox.getChildren().addAll(channelsLabel, channelComboBox);
-		channelsHBox.setAlignment(Pos.BASELINE_CENTER);
+        // this is used to populate channels combobox with specific region channels
+        regionComboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue == null) {
+                channelComboBox.getItems().clear();
+                channelComboBox.setDisable(true);
+            } else {
+                channelComboBox.setDisable(false);
+                channelComboBox.getItems().setAll(regionsAndChannels.get(newValue));
+            }
+        });
+
+        HBox channelsHBox = new HBox();
+        channelsHBox.getChildren().addAll(channelsLabel, channelComboBox);
+        channelsHBox.setAlignment(Pos.BASELINE_CENTER);
 
 		addActionHandlerForButtonVizualize(visualizeButton);
 

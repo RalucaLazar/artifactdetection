@@ -7,7 +7,8 @@ import java.util.List;
 public enum ArtifactType {
 
     OCULAR,
-    MUSCLE;
+    MUSCLE,
+    NOISE;
 
     public boolean isSuitableForType(int channel) {
         //the channel is not included in any of the five regions (F, T, P, O, C)
@@ -32,7 +33,6 @@ public enum ArtifactType {
                 }
                 reject = true;
             } catch (IllegalArgumentException exception) {
-//                exception.printStackTrace();
             }
         }
         if (reject) {

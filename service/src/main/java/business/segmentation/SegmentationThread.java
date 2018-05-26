@@ -1,6 +1,7 @@
 package business.segmentation;
 
 import java.io.File;
+import java.io.IOException;
 
 public class SegmentationThread extends Thread {
 
@@ -14,6 +15,10 @@ public class SegmentationThread extends Thread {
 
     @Override
     public void run() {
-        Segmentation.parseFile(file, count);
+        try {
+            Segmentation.parseFile(file, count);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

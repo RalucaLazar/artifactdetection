@@ -82,7 +82,7 @@ public class DecisionTreeClassifier implements Classifier {
 
 		 List<String> fvClassVal = new ArrayList<>();
 		 fvClassVal.add(ResultType.BRAIN_SIGNAL.name());
-		 fvClassVal.add(ResultType.OCCULAR.name());
+		 fvClassVal.add(ResultType.OCULAR.name());
 		 fvClassVal.add(ResultType.MUSCLE.name());
 		 Attribute classAttribute = new Attribute("class", fvClassVal);
 		 fvWekaAttributes.add(classAttribute);

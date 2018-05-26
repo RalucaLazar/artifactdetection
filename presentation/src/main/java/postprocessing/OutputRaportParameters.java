@@ -35,7 +35,7 @@ public class OutputRaportParameters {
 				this.overlappingSegmentsType.put(index, 1);
 				if (segment.getIterIdx() == 0)
 					this.segmentsType.put(index, 1);
-			} else if (segment.getCorrectType() == ResultType.OCCULAR) {
+			} else if (segment.getCorrectType() == ResultType.OCULAR) {
 				this.noOfOcularArtifacts++;
 				this.overlappingSegmentsType.put(index, 2);
 				if (segment.getIterIdx() == 0)

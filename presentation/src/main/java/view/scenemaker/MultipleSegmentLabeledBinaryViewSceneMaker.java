@@ -50,7 +50,7 @@ public class MultipleSegmentLabeledBinaryViewSceneMaker extends MultipleSegmentL
                     } else {
                         if (selected.equals(artef)) {
 //							logger.info("artef");
-                            currentSegment.setCorrectType(ResultType.OCCULAR);
+                            currentSegment.setCorrectType(ResultType.OCULAR);
                         }
                     }
                 }

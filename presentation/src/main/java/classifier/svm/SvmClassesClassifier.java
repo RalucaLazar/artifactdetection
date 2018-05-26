@@ -48,7 +48,7 @@ public class SvmClassesClassifier extends SvmBinaryClassifier {
                 if (artyfactsClassificationResults.get(j) < 0) {
                     segments.get(i).setCorrectType(ResultType.MUSCLE);
                 } else {
-                    segments.get(i).setCorrectType(ResultType.OCCULAR);
+                    segments.get(i).setCorrectType(ResultType.OCULAR);
                 }
                 j++;
             }

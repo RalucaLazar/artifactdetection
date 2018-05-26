@@ -43,9 +43,9 @@ public class MultiChannelSegment extends AbstractSegment implements Comparable{
 	{
 		for (Segment segment : this.segments)
 		{
-			if (ResultType.OCCULAR.equals(segment.getCorrectType()))
+			if (ResultType.OCULAR.equals(segment.getCorrectType()))
 			{
-				return ResultType.OCCULAR;
+				return ResultType.OCULAR;
 			}
 			if (ResultType.MUSCLE.equals(segment.getCorrectType()))
 			{

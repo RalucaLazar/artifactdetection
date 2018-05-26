@@ -126,7 +126,7 @@ public class MultiChannelSegmentation {
 //	
 //	private void addToSerializableStructure(MultiChannelSegment segment, int type){
 //		switch (segment.getCorrectType()) {
-//		case OCCULAR:
+//		case OCULAR:
 //			switch (type) {
 //			case 1:
 //				occularStructTrain.addSegment(segment);

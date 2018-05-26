@@ -150,7 +150,7 @@ public class MultipleSegmentLabeledViewSceneMaker extends AbstractSceneMaker {
                     } else {
                         if (selected.equals(ocular)) {
 //							logger.info("changed label to ocular");
-                            currentSegment.setCorrectType(ResultType.OCCULAR);
+                            currentSegment.setCorrectType(ResultType.OCULAR);
                         } else {
 //							logger.info("changed label to muscular");
                             currentSegment.setCorrectType(ResultType.MUSCLE);

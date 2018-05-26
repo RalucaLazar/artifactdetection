@@ -59,7 +59,7 @@ public class KnnClassifier implements Classifier {
             return ResultType.BRAIN_SIGNAL;
         } else {
             if (label == 2) {
-                return ResultType.OCCULAR;
+                return ResultType.OCULAR;
             } else {
                 if (label == 3) {
                     return ResultType.MUSCLE;

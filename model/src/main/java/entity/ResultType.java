@@ -2,7 +2,7 @@ package entity;
 
 public enum ResultType {
 
-	OCCULAR, 
+	OCULAR,
 	BRAIN_SIGNAL, 
 	MUSCLE
 }

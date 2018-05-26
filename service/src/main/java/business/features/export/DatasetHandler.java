@@ -58,7 +58,7 @@ public class DatasetHandler {
                     noOfBrainSignals++;
                     outputSegmentList.add(segment);
                 }
-            } else if (segment.getCorrectType() == ResultType.OCCULAR) {
+            } else if (segment.getCorrectType() == ResultType.OCULAR) {
                 noOfOcularArtifacts++;
                 outputSegmentList.add(segment);
             } else {

@@ -215,7 +215,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
                                     System.out
                                             .println("changed label to ocular");
                                     currentSegment
-                                            .setCorrectType(ResultType.OCCULAR);
+                                            .setCorrectType(ResultType.OCULAR);
                                 } else {
                                     System.out
                                             .println("changed label to muscular");

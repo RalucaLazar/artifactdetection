@@ -4,7 +4,6 @@ import business.builders.FeatureBuilder;
 import entity.AbstractSegment;
 import entity.Feature;
 import entity.ResultType;
-import entity.Segment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +56,7 @@ public class TrainDatasetHandler {
                     noOfBrainSignals++;
                     outputSegmentList.add(segment);
                 }
-            } else if (segment.getCorrectType() == ResultType.OCCULAR) {
+            } else if (segment.getCorrectType() == ResultType.OCULAR) {
                 noOfOcularArtifacts++;
                 outputSegmentList.add(segment);
             } else {

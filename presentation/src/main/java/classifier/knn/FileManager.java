@@ -42,7 +42,7 @@ public class FileManager {
             if (classLabelString.equals("BRAIN_SIGNAL")) {
                 classLabel = 1;
             } else {
-                if (classLabelString.equals("OCCULAR")) {
+                if (classLabelString.equals("OCULAR")) {
                     classLabel = 2;
                 } else {
                     if (classLabelString.equals("MUSCLE")) {
@@ -87,7 +87,7 @@ public class FileManager {
             if (classLabelString.equals("BRAIN_SIGNAL")) {
                 classLabel = 1;
             } else {
-                if (classLabelString.equals("OCCULAR")) {
+                if (classLabelString.equals("OCULAR")) {
                     classLabel = 2;
                 } else {
                     if (classLabelString.equals("MUSCLE")) {

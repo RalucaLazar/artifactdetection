@@ -45,7 +45,7 @@ public abstract class AbstractSegmentation {
 
     }
 
-    public static void segment(List<Double> data, int index, int channel, int type) {
+    public static void segment(List<Float> data, int index, int channel, int type) {
         fws.segment(data.stream().mapToDouble(i -> i).toArray(), index, channel, type);
     }
 

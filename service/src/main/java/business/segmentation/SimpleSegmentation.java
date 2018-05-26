@@ -2,8 +2,7 @@ package business.segmentation;
 
 import business.builders.SimpleStructureBuilder;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -17,16 +16,18 @@ public class SimpleSegmentation extends AbstractSegmentation {
         super(new SimpleStructureBuilder());
     }
 
-    protected void parseFile(File file, int index) {
+    protected void parseFile(File file, int index) throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(file);
+        DataInputStream input = new DataInputStream(fileInputStream);
         int channel = getChannelFromFile(file.getName());
 //		logger.info("Fisierul channel "+channel);
-        List<Double> data = new ArrayList<>();
-        try (Scanner scan = new Scanner(file)) {
-            while (scan.hasNextDouble()) {
-                data.add(scan.nextDouble());
+        List<Float> data = new ArrayList<>();
+        while (input.available() > 0) {
+            try {
+                data.add(Float.intBitsToFloat(Integer.reverseBytes(input.readInt())));
+            } catch (EOFException e) {
+                e.printStackTrace();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
 //		logger.info("Nr valori "+data.size());
         segment(data, index, channel, 1);

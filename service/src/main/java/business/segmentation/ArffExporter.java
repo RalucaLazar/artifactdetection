@@ -1,13 +1,11 @@
 package business.segmentation;
 
-import business.features.export.ArffGenerator;
 import business.features.export.SegmentSerializer;
 import com.google.common.collect.Lists;
 import entity.AbstractSegment;
 import entity.Configuration;
 import entity.ResultType;
 import entity.SegmentRepository;
-import utils.SegmentDeserializer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,13 +26,7 @@ public class ArffExporter {
     private SegmentRepository muscleEval;
     private SegmentRepository allForTrain;
     private SegmentRepository allForTest;
-    private SegmentRepository train1;
-    private SegmentRepository train2;
-    private SegmentRepository train3;
-    private SegmentRepository train4;
-    private SegmentRepository train5;
-    private SegmentRepository eval;
-    private SegmentRepository test;
+
 
     public ArffExporter() {
         //trainRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/TrainData.ser");
@@ -47,14 +39,6 @@ public class ArffExporter {
         this.cleanEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Clean_Eval.ser");
         this.occularEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Occular_Eval.ser");
         this.muscleEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Muscle_Eval.ser");
-
-        this.train1 = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Train1Balanced.ser");
-        this.train2 = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Train2Balanced.ser");
-        this.train3 = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Train3Balanced.ser");
-        this.train4 = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Train4Balanced.ser");
-        this.train5 = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Train5Balanced.ser");
-        this.eval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Eval.ser");
-        this.test = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Test.ser");
 
 //        this.allForTrain =  SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/AllForTrain.ser");
 //        this.allForTest = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/AllForTestBalanced.ser");
@@ -83,6 +67,9 @@ public class ArffExporter {
         return muscleRepo;
     }
 
+    public SegmentRepository getCleanTest() {
+        return cleanTest;
+    }
 
     public SegmentRepository getOccularTest() {
         return occularTest;
@@ -92,8 +79,16 @@ public class ArffExporter {
         return muscleTest;
     }
 
+    public SegmentRepository getCleanEval() {
+        return cleanEval;
+    }
+
     public SegmentRepository getOccularEval() {
         return occularEval;
+    }
+
+    public SegmentRepository getMuscleEval() {
+        return muscleEval;
     }
 
 
@@ -105,91 +100,6 @@ public class ArffExporter {
         return Lists.newArrayList(this.occularRepo, this.occularEval, this.occularTest,
                 this.muscleRepo, this.muscleEval, this.muscleTest,
                 this.cleanRepo, this.cleanEval, this.cleanTest);
-    }
-
-    public SegmentRepository getOcularRepo() {
-        return this.occularRepo;
-    }
-
-    public SegmentRepository getCleanEval() {
-        return this.cleanEval;
-    }
-
-    public SegmentRepository getOcularEval() {
-        return this.occularEval;
-    }
-
-    public SegmentRepository getCleanTest() {
-        return this.cleanTest;
-    }
-
-    public SegmentRepository getOcularTest() {
-        return this.occularTest;
-    }
-
-    public void exportArff() throws IOException {
-//         TRAIN1
-        List<AbstractSegment> train1Segm = new ArrayList<>();
-        train1Segm.addAll(this.train1.getSegments());
-        Collections.shuffle(train1Segm);
-        ArffGenerator arffGenerator1 = new ArffGenerator(Configuration.ARFF_TRAIN1_NAME);
-        for (AbstractSegment segment : train1Segm) {
-            arffGenerator1.writeSegmentFeatures(segment.getFeatures(), segment.getCorrectType());
-        }
-
-//         TRAIN2
-        List<AbstractSegment> train2Segm = new ArrayList<>();
-        train2Segm.addAll(this.train2.getSegments());
-        Collections.shuffle(train2Segm);
-        ArffGenerator arffGenerator2 = new ArffGenerator(Configuration.ARFF_TRAIN2_NAME);
-        for (AbstractSegment segment : train2Segm) {
-            arffGenerator2.writeSegmentFeatures(segment.getFeatures(), segment.getCorrectType());
-        }
-
-        // TRAIN3
-        List<AbstractSegment> train3Segm = new ArrayList<>();
-        train3Segm.addAll(this.train3.getSegments());
-        Collections.shuffle(train3Segm);
-        ArffGenerator arffGenerator3 = new ArffGenerator(Configuration.ARFF_TRAIN3_NAME);
-        for (AbstractSegment segment : train3Segm) {
-            arffGenerator3.writeSegmentFeatures(segment.getFeatures(), segment.getCorrectType());
-        }
-
-        // TRAIN4
-        List<AbstractSegment> train4Segm = new ArrayList<>();
-        train4Segm.addAll(this.train4.getSegments());
-        Collections.shuffle(train4Segm);
-        ArffGenerator arffGenerator4 = new ArffGenerator(Configuration.ARFF_TRAIN4_NAME);
-        for (AbstractSegment segment : train4Segm) {
-            arffGenerator4.writeSegmentFeatures(segment.getFeatures(), segment.getCorrectType());
-        }
-
-        // TRAIN5
-        List<AbstractSegment> train5Segm = new ArrayList<>();
-        train5Segm.addAll(this.train5.getSegments());
-        Collections.shuffle(train5Segm);
-        ArffGenerator arffGenerator5 = new ArffGenerator(Configuration.ARFF_TRAIN5_NAME);
-        for (AbstractSegment segment : train5Segm) {
-            arffGenerator5.writeSegmentFeatures(segment.getFeatures(), segment.getCorrectType());
-        }
-
-        // EVAL
-        List<AbstractSegment> evalSegm = new ArrayList<>();
-        evalSegm.addAll(this.eval.getSegments());
-        Collections.shuffle(evalSegm);
-        ArffGenerator arffGenerator6 = new ArffGenerator(Configuration.ARFF_EVAL_NAME);
-        for (AbstractSegment segment : evalSegm) {
-            arffGenerator6.writeSegmentFeatures(segment.getFeatures(), segment.getCorrectType());
-        }
-
-        //TEST
-        List<AbstractSegment> testSegm = new ArrayList<>();
-        testSegm.addAll(this.test.getSegments());
-        Collections.shuffle(testSegm);
-        ArffGenerator arffGenerator7 = new ArffGenerator(Configuration.ARFF_TEST_NAME);
-        for (AbstractSegment segment : testSegm) {
-            arffGenerator7.writeSegmentFeatures(segment.getFeatures(), segment.getCorrectType());
-        }
     }
 
 

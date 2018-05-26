@@ -1,7 +1,6 @@
 package business.labels;
 
 import com.google.common.collect.Range;
-import com.sun.xml.internal.ws.util.StringUtils;
 import entity.ArtifactType;
 import entity.ArtifactsStructure;
 import entity.Configuration;

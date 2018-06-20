@@ -13,14 +13,8 @@ public class FixedWindowSegmentation {
         this.sb = sb;
     }
 
-    /**
-     * @param allValues
-     * @param windowSize - nr de valori (calculul timp - nr val deja efectuat)
-     * @return
-     */
     public void segment(double[] allValues, int index, int channel, int type) {
-        int i = 0;
-        for (i = 0; i < Configuration.WINDOW_SIZE; i += Configuration.STEP) {
+        for (int i = 0; i < Configuration.WINDOW_SIZE; i += Configuration.STEP) {
             iterativeSegm(allValues, i, channel, type);
         }
     }

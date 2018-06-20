@@ -2,28 +2,30 @@ package business.segmentation;
 
 import business.features.export.SegmentExporter;
 import business.features.export.SegmentSerializer;
-import entity.AbstractSegment;
-import entity.Configuration;
-import entity.ResultType;
-import entity.SegmentRepository;
+import entity.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class SegmenatationMain {
+public class DataPreprocessor {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
-//        // use this part for segmentation
-//        AbstractSegmentation segmentation = new Segmentation();
-//        List<SegmentRepository> repositories = segmentation.parseDataDirectory(new File(Configuration.TXT_INPUT_FILES));
-//        SegmentExporter.exportAll(repositories);
+        // here you put the region and corresponding channels before starting segmentati/**/on
+        Map<String, List<Integer>> map = new HashMap<>();
+        map.put("F", Arrays.asList(2, 3, 4, 5, 9));
+        RegionChannel.setRegionsAndChannels(map);
+
+        // use this part for segmentation
+        AbstractSegmentation segmentation = new Segmentation();
+        List<SegmentRepository> repositories = segmentation.parseDataDirectory(new File(Configuration.BINARY_INPUT_FILES),
+                SegmentationType.LABELED);
+        SegmentExporter.exportAll(repositories);
 
         // use this part to compute the last 2 features (pearson, max correlation)
-//        ArffExporter arffExporter = new ArffExporter();
-//        List<SegmentRepository> segmentRepositories = arffExporter.getSegmentRepositories();
+        ArffExporter arffExporter = new ArffExporter();
+        List<SegmentRepository> segmentRepositories = arffExporter.getSegmentRepositories();
 //        MultiChannelSegmentation multiChannelSegmentation = new MultiChannelSegmentation(segmentRepositories);
 //        multiChannelSegmentation.buildMultichannelSegments();
 //
@@ -34,13 +36,13 @@ public class SegmenatationMain {
 //        evalRepo.setSegments(evalSegments);
 //        SegmentSerializer.serialize(evalRepo, Configuration.RESULTS_PATH);
 //
-        //List<AbstractSegment> testSegments = combineSers(arffExporter.getCleanTest(), arffExporter.getOccularTest());
-
+//        List<AbstractSegment> testSegments = combineSers(arffExporter.getCleanTest(), arffExporter.getOccularTest());
+//
 //        SegmentRepository testRepo = new SegmentRepository("Test");
 //        testRepo.setSegments(testSegments);
 //        System.out.println("Test segments: " + testSegments.size());
 //        SegmentSerializer.serialize(testRepo, Configuration.RESULTS_PATH);
-
+//
 //        List<AbstractSegment> cleanSegments = arffExporter.getCleanRepo().getSegments();
 //
 //        int size = cleanSegments.size() / 5;
@@ -67,7 +69,7 @@ public class SegmenatationMain {
 //        train1Repo.setSegments(train1);
 //        SegmentSerializer.serialize(train1Repo, Configuration.RESULTS_PATH);
 //        dataBalancer("/home/raluca/work/artifactdetection/results/Train1.ser");
-
+//
 //        train2.addAll(cleanList2);
 //        train2.addAll(ocularSegments);
 //        SegmentRepository train2Repo = new SegmentRepository("Train2");
@@ -115,7 +117,7 @@ public class SegmenatationMain {
 
         System.out.println("Number of segments: " + segments.size());
         TrainDatasetHandler datasetHandler = new TrainDatasetHandler();
-        List<AbstractSegment> oversampledSegments = datasetHandler.getSMOTEOversampling(segments, 2000);
+        List<AbstractSegment> oversampledSegments = datasetHandler.applySMOTE(segments, 2000);
         System.out.println("Number of segments after SMOTE: " + oversampledSegments.size());
 
         SegmentRepository cleanR = new SegmentRepository("cleanR");
@@ -136,7 +138,7 @@ public class SegmenatationMain {
         System.out.println("Number of ocular segments after SMOTE: " + ocularR.getSegments().size());
 
         DataBalancer dataBalancer = new DataBalancer();
-        List<AbstractSegment> undersampledSegments = dataBalancer.undersample(cleanR, ocularR, muscleR);
+        List<AbstractSegment> undersampledSegments = dataBalancer.applyUndesample(cleanR, ocularR, muscleR);
         System.out.println("Number of segments after undersampling: " + undersampledSegments.size());
 
         SegmentRepository cleanR1 = new SegmentRepository("cleanR");

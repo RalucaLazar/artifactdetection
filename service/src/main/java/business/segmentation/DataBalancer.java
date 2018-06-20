@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DataBalancer {
     //add SegmentRepository muscular as parameter
-    public List<AbstractSegment> undersample(SegmentRepository clean, SegmentRepository occular, SegmentRepository muscular) {
+    public List<AbstractSegment> applyUndesample(SegmentRepository clean, SegmentRepository occular, SegmentRepository muscular) {
         int szOccular = occular.getSegments().size();
         int szMuscular = muscular.getSegments().size();
         List<AbstractSegment> resultList = new ArrayList<>();

@@ -11,9 +11,6 @@ import java.util.*;
 
 public class ArtifactsLabelsExtractor {
 
-//	private Logger logger = LoggerUtil.logger(ArtifactsLabelsExtractor.class);
-
-
     public Map<ArtifactType, ArtifactsStructure> parseLabelsDirectory(String directoryName) {
         File folder = new File(directoryName);
         Map<ArtifactType, ArtifactsStructure> artifactsStructures = new HashMap<>();
@@ -43,6 +40,7 @@ public class ArtifactsLabelsExtractor {
         artifactsStructures.put(ArtifactType.OCULAR, new ArtifactsStructure(ArtifactType.OCULAR, ocularMap));
         artifactsStructures.put(ArtifactType.MUSCLE, new ArtifactsStructure(ArtifactType.MUSCLE, muscleMap));
         artifactsStructures.put(ArtifactType.NOISE, new ArtifactsStructure(ArtifactType.NOISE, noiseMap));
+
         return artifactsStructures;
     }
 
@@ -64,13 +62,11 @@ public class ArtifactsLabelsExtractor {
 
     private int computeIndexFromTime(Scanner scan) {
         int val = scan.nextInt();
-//		logger.info(val);
         return (int) (val * Configuration.RATE);
     }
 
 
     // Labels file name: TYPE_CHANNEL.txt
-
     private ArtifactType getArtifactTypeFromFile(String file) {
         return ArtifactType.valueOf(file.substring(0, file.indexOf("_")));
     }

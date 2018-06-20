@@ -1,5 +1,6 @@
 package view.util;
 
+import entity.RegionChannel;
 import view.scenemaker.AbstractSceneMaker;
 
 import java.io.BufferedReader;
@@ -8,12 +9,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class FileUtil {
 
     private static int freq;
     public static Map<String, List<String>> regionsAndChannels = new TreeMap<>();
     private String folderPath;
+    private Map<String, List<Integer>> regionsAndChannels1 = new HashMap<>();
 
     public FileUtil() {
         folderPath = AbstractSceneMaker.getInputFilesPath();
@@ -46,15 +49,13 @@ public class FileUtil {
             }
 
             System.out.println("Frecventa este: " + freq);
-            System.out.println();
-
-            for (Map.Entry<String, List<String>> entry : regionsAndChannels.entrySet()) {
-                System.out.println(entry.getKey() + ":" + entry.getValue());
-            }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        regionsAndChannels.forEach((k, v) -> regionsAndChannels1.put(k, convertValuesToInteger(v)));
+        RegionChannel.setRegionsAndChannels(regionsAndChannels1);
 
         deleteFile(txtFile);
     }
@@ -100,5 +101,11 @@ public class FileUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static List<Integer> convertValuesToInteger(final List<String> values) {
+        return values.stream()
+                .map(Integer::valueOf)
+                .collect(Collectors.toList());
     }
 }

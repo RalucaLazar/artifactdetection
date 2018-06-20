@@ -15,12 +15,11 @@ public class SimpleStructureBuilder extends AbstractStructureBuilder {
 
     public SimpleStructureBuilder() {
         super();
-        this.segmentRepository = new SegmentRepository("All_Segments");
+        this.segmentRepository = new SegmentRepository("All_Segments_Test");
     }
 
     public void buildDataStructures(double[] data, int iter, int localIndex, int channel, int type) {
-        int index = localIndex;
-        Segment segment = createSegment(data, iter, index, channel);
+        Segment segment = createSegment(data, iter, localIndex, channel);
         segmentRepository.addSegment(segment);
     }
 

@@ -3,11 +3,15 @@ package business.segmentation;
 import business.builders.StructureBuilder;
 import entity.Configuration;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import javax.xml.crypto.Data;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import static entity.Configuration.MAX_INDEX;
+import static entity.Configuration.TEST_MAX_INDEX;
+import static entity.Configuration.TRAIN_MAX_INDEX;
 
 public class Segmentation extends AbstractSegmentation {
 
@@ -15,32 +19,37 @@ public class Segmentation extends AbstractSegmentation {
         super(new StructureBuilder());
     }
 
-    public static void parseFile(File file, int index) {
+    public static void parseFile(File file, int index) throws IOException {
         int channel = getChannelFromFile(file.getName());
         System.out.println(channel);
-        List<Double> data = new ArrayList<>();
+        List<Double> trainData = new ArrayList<>();
         List<Double> testData = new ArrayList<>();
         List<Double> evalData = new ArrayList<>();
-        int count = 0;
-        try (Scanner scan = new Scanner(file)) {
-            // & count < see nr. of values
-            while (scan.hasNextDouble()) {
-                count++;
-                if (count <= Configuration.TRAIN_MAX_INDEX) {
-                    data.add(scan.nextDouble());
-                } else if (count <= Configuration.TEST_MAX_INDEX) {
-                    testData.add(scan.nextDouble());
-                } else if (count <= Configuration.MAX_INDEX) {
-                    evalData.add(scan.nextDouble());
-                } else {
-                    break;
-                }
+
+        List<Double> values = new ArrayList<>();
+        DataInputStream input = new DataInputStream(new FileInputStream(file));
+
+        while (input.available() > 0) {
+            try {
+                values.add((double) Float.intBitsToFloat(Integer.reverseBytes(input.readInt())));
+            } catch (EOFException e) {
+                System.out.println("Error");
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
 
-        segment(data, index, channel, 1);
+        System.out.println(values.size());
+
+        for (int i = 0; i < values.size(); i++) {
+            if (i <= TRAIN_MAX_INDEX) {
+                trainData.add(values.get(i));
+            } else if (i <= TEST_MAX_INDEX) {
+                testData.add(values.get(i));
+            } else if (i <= MAX_INDEX) {
+                evalData.add(values.get(i));
+            }
+        }
+
+        segment(trainData, index, channel, 1);
         segment(testData, index, channel, 2);
         segment(evalData, index, channel, 3);
     }

@@ -47,6 +47,16 @@ public class SvmBinaryClassifier implements Classifier {
 		return segments;
 	}
 
+	@Override
+	public Segment classifySegment(Segment segment) {
+		return null;
+	}
+
+	@Override
+	public void createModel(String trainSetPath) {
+
+	}
+
 	/*
 	 * format used for learning file is <line> .=. <target> <feature>:<value>
 	 * ... <feature>:<value> # <info> <target> .=. +1 | -1 | 0 | <float>

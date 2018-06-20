@@ -7,7 +7,7 @@ public class Feature implements Serializable {
     private static final long serialVersionUID = 2L;
     private FeatureType feature;
     private double value;
-    private RegionNew region;
+    private String region;
 
     public Feature(FeatureType feature) {
         this.feature = feature;
@@ -17,7 +17,7 @@ public class Feature implements Serializable {
         this.feature = FeatureType.valueOf(multiChannelFeatureType.toString());
     }
 
-    public Feature(MultiChannelFeatureType multiChannelFeatureType, RegionNew region) {
+    public Feature(MultiChannelFeatureType multiChannelFeatureType, String region) {
         this(multiChannelFeatureType);
         this.region = region;
     }
@@ -34,7 +34,7 @@ public class Feature implements Serializable {
         return value;
     }
 
-    public RegionNew getRegion() {
+    public String getRegion() {
         return region;
     }
 

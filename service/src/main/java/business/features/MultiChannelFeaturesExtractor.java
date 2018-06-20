@@ -15,20 +15,6 @@ public class MultiChannelFeaturesExtractor {
         }
     }
 
-    public void setMultiChannelFeatureForRegion(MultiChannelSegment multiChannelSegment) {
-        for (Segment segment : multiChannelSegment.getSegments()) {
-            computeMultiChannelFeature2(multiChannelSegment, segment);
-        }
-    }
-
-    public void computeMultiChannelFeature2(MultiChannelSegment multiChannelSegment, Segment segment) {
-        // double[] mean = getMultichannelMeanData(multiChannelSegment,
-        // segment);
-        //CorrelationFeaturesExtractor correlationFeaturesExtractor = new CorrelationFeaturesExtractor();
-
-        setFeature(segment, getMultichannelMeanMaxCorrResults(multiChannelSegment.getRegionalSegment(segment), segment));
-    }
-
     public void computeMultiChannelFeature(MultiChannelSegment multiChannelSegment, Segment segment) {
         // double[] mean = getMultichannelMeanData(multiChannelSegment,
         // segment);

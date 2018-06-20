@@ -1,14 +1,13 @@
-package business.segmentation;
+package business.segmentation.simplesegmentation;
 
 import java.io.File;
 import java.io.IOException;
 
-public class SegmentationThread extends Thread {
-
+public class SimpleSegmentationThread extends Thread {
     private File file;
     private int count;
 
-    public SegmentationThread(File file, int count) {
+    public SimpleSegmentationThread(File file, int count) {
         this.file = file;
         this.count = count;
     }
@@ -16,7 +15,7 @@ public class SegmentationThread extends Thread {
     @Override
     public void run() {
         try {
-            Segmentation.parseFile(file, count);
+            SimpleSegmentation.parseFile(file, count);
         } catch (IOException e) {
             e.printStackTrace();
         }

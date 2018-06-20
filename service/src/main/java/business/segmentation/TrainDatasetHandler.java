@@ -142,7 +142,7 @@ public class TrainDatasetHandler {
      * @param noOfNewSamples - samples to be computed
      * @return List<AbstractSegment>
      */
-    public List<AbstractSegment> getSMOTEOversampling(List<AbstractSegment> segments, int noOfNewSamples) {
+    public List<AbstractSegment> applySMOTE(List<AbstractSegment> segments, int noOfNewSamples) {
         AbstractSegment newSegment, neighbourSegment;
         Feature[] features, neighbourFeatures, newFeatures;
         double randomValue;

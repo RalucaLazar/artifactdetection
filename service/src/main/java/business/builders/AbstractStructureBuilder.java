@@ -7,7 +7,6 @@ import entity.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by Cristina on 3/4/2018.
@@ -54,36 +53,6 @@ public abstract class AbstractStructureBuilder {
                 return null;
             }
             feat.setValue(FeatureExtractor.getFeatureValue(feat.getFeature(), data));
-        }
-        return features;
-    }
-
-    public Feature[] computeMultiRegionFeaturesForSegment(double[] data) {
-        Feature[] features = FeatureBuilder.createStandardMultiChannelFeaturesInstances();
-        for (Feature feat : features) {
-            if (FeatureExtractor.getFeatureValue(feat.getFeature(), data) == null) {
-//				logger.error("Error with the feature extraction! in StructureBuilder[computeFeaturesForSegment]");
-                return null;
-            }
-            feat.setValue(FeatureExtractor.getFeatureValue(feat.getFeature(), data));
-        }
-        return features;
-    }
-
-    public Feature[] computeMultiRegionFeaturesForMultiChannelSegment(List<Segment> segments) {
-        Feature[] features = FeatureBuilder.createStandardMultiChannelFeaturesPerRegionInstances();
-        Map<RegionNew, List<Segment>> segmentsGroupedByRegion = segments.stream()
-                .collect(Collectors.groupingBy(s -> RegionNew.getRegionByChannel(s.getChannelNr())));
-        for (Feature feature : features) {
-            RegionNew region = feature.getRegion();
-            FeatureType type = feature.getFeature();
-            List<Segment> regionSegments = segmentsGroupedByRegion.get(region);
-            double mean = 0;
-            for (Segment segment : regionSegments) {
-                mean += segment.getFeatureValueForFeature(type);
-            }
-            mean = mean / regionSegments.size();
-            feature.setValue(mean);
         }
         return features;
     }

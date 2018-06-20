@@ -13,7 +13,7 @@ public enum ArtifactType {
     public boolean isSuitableForType(int channel) {
         //the channel is not included in any of the five regions (F, T, P, O, C)
         //it is in the NON region
-        return RegionNew.getRegionByChannel(channel) != null;
+        return RegionChannel.getRegionByChannel(channel) != null;
     }
 
     public Boolean isArtifact(Range<Integer> segmentRange, List<Range<Integer>> artifactRanges) {

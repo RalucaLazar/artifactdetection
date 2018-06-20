@@ -49,7 +49,6 @@ public class StructureBuilder extends AbstractStructureBuilder {
         ResultType resultType = computeCorrectType(index, channel);
         if (resultType != null) {
             Segment segment = createSegment(data, iter, index, channel, resultType);
-            //dataGen.writeSegment(segment);
             addToSerializableStructure(segment, type);
         }
     }

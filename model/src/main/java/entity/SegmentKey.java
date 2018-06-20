@@ -7,9 +7,9 @@ public class SegmentKey implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private int initIdx;
 	private int iterIdx;
-	private RegionNew region;
+	private String region;
 	
-	public SegmentKey(int iterIdx, int initIdx, RegionNew region) {
+	public SegmentKey(int iterIdx, int initIdx, String region) {
 		this.initIdx = initIdx;
 		this.iterIdx = iterIdx;
 		this.region = region;

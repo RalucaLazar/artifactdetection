@@ -39,6 +39,16 @@ public class KnnClassifier implements Classifier {
         return segments;
     }
 
+    @Override
+    public Segment classifySegment(Segment segment) {
+        return null;
+    }
+
+    @Override
+    public void createModel(String trainSetPath) {
+
+    }
+
     private double[] getFeaturesValues(Feature[] features) {
         double[] values = new double[NUMBER_FEATURES];
         values[0] = features[2].getValue();

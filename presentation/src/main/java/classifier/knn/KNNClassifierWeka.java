@@ -1,9 +1,9 @@
-package classifier.decisiontree;
+package classifier.knn;
 
 import classifier.WekaClassifier;
 import entity.Configuration;
 import weka.classifiers.AbstractClassifier;
-import weka.classifiers.trees.REPTree;
+import weka.classifiers.lazy.IBk;
 import weka.core.Instances;
 import weka.core.SerializationHelper;
 import weka.core.Utils;
@@ -13,31 +13,31 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+public class KNNClassifierWeka extends WekaClassifier {
 
-public class DecisionTreeClassifier extends WekaClassifier {
+    private IBk IBkClassifier;
 
-    private REPTree REPTreeClassifier;
-
-    public DecisionTreeClassifier() {
-        REPTreeClassifier = new REPTree();
+    public KNNClassifierWeka() {
+        IBkClassifier = new IBk();
     }
+
 
     @Override
     public AbstractClassifier createClassifier() {
-        System.out.println("Loading REPTree WEKA model...");
+        System.out.println("Loading IBk WEKA model...");
         try {
-            REPTreeClassifier = (REPTree) SerializationHelper.read(new FileInputStream(Configuration.DT_MODEL));
-            System.out.println("REPTree Weka model loaded");
+            IBkClassifier = (IBk) SerializationHelper.read(new FileInputStream(Configuration.KNN_MODEL));
+            System.out.println("IBk Weka model loaded");
         } catch (ClassNotFoundException e) {
             System.out.println("Invalid classifier object loaded, Loading ignored." + e);
         } catch (FileNotFoundException e) {
-            System.out.println("Model file not found at " + Configuration.DT_MODEL + e);
+            System.out.println("Model file not found at " + Configuration.KNN_MODEL + e);
         } catch (IOException e) {
             System.out.println("Model file read failed." + e);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return REPTreeClassifier;
+        return IBkClassifier;
     }
 
     @Override
@@ -48,14 +48,14 @@ public class DecisionTreeClassifier extends WekaClassifier {
             //TODO: set the corresponding options
             String[] options = Utils.splitOptions("");
 
-            REPTreeClassifier.setOptions(options);
-            REPTreeClassifier.buildClassifier(trainingData);
+            IBkClassifier.setOptions(options);
+            IBkClassifier.buildClassifier(trainingData);
 
             if (crossValidate) {
                 crossValidate(trainingData);
             }
 
-            saveModel(new File(Configuration.CLASSIFIER_MODELS, "dt.model").getAbsolutePath());
+            saveModel(new File(Configuration.CLASSIFIER_MODELS, "knn.model").getAbsolutePath());
             System.out.println("Model built and saved");
         } catch (Exception e) {
             System.out.println("Training classifier failed." + e);
@@ -64,6 +64,7 @@ public class DecisionTreeClassifier extends WekaClassifier {
 
     @Override
     public AbstractClassifier getClassifier() {
-        return REPTreeClassifier;
+        return IBkClassifier;
     }
+
 }

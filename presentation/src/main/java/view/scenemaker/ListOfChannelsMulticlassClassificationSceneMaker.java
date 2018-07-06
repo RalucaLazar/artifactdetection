@@ -1,6 +1,7 @@
 package view.scenemaker;
 
 import classifier.Classifier;
+import entity.Configuration;
 import entity.Segment;
 import helpers.LoggerUtil;
 import javafx.event.ActionEvent;
@@ -16,14 +17,16 @@ public class ListOfChannelsMulticlassClassificationSceneMaker extends
         ListOfChannelsSceneMaker {
 
     Classifier clasiffier;
-    Logger logger = LoggerUtil.logger(getClass());
+    private boolean train;
 
 
     public ListOfChannelsMulticlassClassificationSceneMaker(Stage stage,
-                                                            Classifier clasiffier) {
+                                                            Classifier clasiffier,
+                                                            boolean train) {
         super(stage);
         this.clasiffier = clasiffier;
-
+        this.train = train;
+        visualizeButton.setText("Classify!");
     }
 
     public Classifier getClasiffier() {
@@ -34,50 +37,40 @@ public class ListOfChannelsMulticlassClassificationSceneMaker extends
         this.clasiffier = clasiffier;
     }
 
+
     @Override
     @SuppressWarnings("restriction")
     protected void addActionHandlerForButtonVizualize(Button btn) {
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        btn.setOnAction(event -> {
+            if (regionComboBox.getValue() != null) {
+                System.out.println("Region: " + regionComboBox.getValue().toString());
 
-            @Override
-            public void handle(ActionEvent event) {
-                logger.info("vizualize classify with MULTICLASS");
-
-                int regionIdx = getRegionComboBoxValue();
-                int channelIdx;
                 if (channelComboBox.getValue() != null) {
-                    channelIdx = Integer.parseInt(channelComboBox.getValue()
-                            .toString());
-                } else {
-                    channelIdx = 0;
-                }
-                int nrChannel = channelIdx + regionIdx * 32;
-                logger.info(channelIdx + " " + regionIdx + " "
-                        + nrChannel);
-                if (nrChannel >= 72) {
-                    SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(
-                            nrChannel);
-                    List<Segment> testSegm = provider
-                            .provideSegments(nrChannel);
-                    logger.info(testSegm);
-                    if (testSegm == null) {
-                        logger.error("list of segments null");
-                        errorLabel
-                                .setText("Channel not available!");
-                    } else {
+                    int nrChannel = Integer.parseInt(channelComboBox.getValue().toString());
 
-                        List<Segment> classifiedSegments = clasiffier
-                                .classifySegments(testSegm);
-                        if (clasiffier == null) {
-                            logger.error("classifier null");
-                            errorLabel.setText("Choose a classifier!");
-                        } else {
-                            SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(
-                                    stage, clasiffier, classifiedSegments, 0, 1);
-                            stage.setScene(sm.makeScene());
-                        }
+                    System.out.println("Channel: " + nrChannel);
+
+                    SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider();
+                    List<Segment> testSegm = provider.provideSegments(nrChannel);
+
+                    //if we select Train & Test, we must create the model first
+                    if(train){
+                        clasiffier.createModel(Configuration.ARFF_TRAIN1_NAME);
                     }
-                } else errorLabel.setText("Channel not available!");
+
+                    if (testSegm == null) {
+                        errorLabel.setText("Channel not available!");
+                    } else {
+                        List<Segment> classifiedSegm = clasiffier.classifySegments(testSegm);
+                        SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(
+                                stage, clasiffier, classifiedSegm, 0, 1, train);
+                        stage.setScene(sm.makeScene());
+                    }
+                } else {
+                    errorLabel.setText("Choose the channel!");
+                }
+            } else {
+                errorLabel.setText("Choose the region and the channel!");
             }
         });
     }

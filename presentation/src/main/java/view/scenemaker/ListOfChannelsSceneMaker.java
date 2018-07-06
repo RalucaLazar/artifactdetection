@@ -2,8 +2,6 @@ package view.scenemaker;
 
 import entity.Configuration;
 import entity.Segment;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -27,10 +25,7 @@ import static view.util.FileUtil.regionsAndChannels;
 public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 
     private static final int NR_CHANNELS = 128;
-//	Logger logger = LoggerUtil.logger(getClass());
 
-    protected Button[] btnChannels;
-    protected Label[] labelChannels;
     protected Label errorLabel = new Label("");
     protected ComboBox regionComboBox;
     protected ComboBox channelComboBox;
@@ -75,7 +70,7 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
         hboxB.setAlignment(Pos.BASELINE_CENTER);
         hboxB.getChildren().addAll(labelB);
 
-        Image image = new Image("file:src/resources/casca.png");
+        Image image = new Image("file:src/resources/system_10_20.png");
         ImageView iv = new ImageView();
         iv.setFitWidth(580);
         iv.setFitHeight(620);
@@ -142,33 +137,28 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
      * @param btn
      */
     protected void addActionHandlerForButtonVizualize(Button btn) {
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        btn.setOnAction(event -> {
+            if (regionComboBox.getValue() != null) {
+                System.out.println("Region: " + regionComboBox.getValue().toString());
 
-            @Override
-            public void handle(ActionEvent event) {
-                int regionIdx = getRegionComboBoxValue();
-                int channelIdx;
                 if (channelComboBox.getValue() != null) {
-                    channelIdx = Integer.parseInt(channelComboBox.getValue()
-                            .toString());
+                    int nrChannel = Integer.parseInt(channelComboBox.getValue().toString());
+
+                    System.out.println("Channel: " + nrChannel);
+
+                    SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider();
+                    List<Segment> testSegm = provider.provideSegments(nrChannel);
+                    if (testSegm == null) {
+                        errorLabel.setText("Channel not available!");
+                    } else {
+                        SimpleSegmentViewSceneMaker sm = new SimpleSegmentViewSceneMaker(stage, testSegm, 0);
+                        stage.setScene(sm.makeScene());
+                    }
                 } else {
-                    channelIdx = 0;
+                    errorLabel.setText("Choose the channel!");
                 }
-                int nrChannel = channelIdx + regionIdx * 32;
-//				logger.info(channelIdx + " " + regionIdx + " "
-//						+ nrChannel);
-//				if (nrChannel >= 72) {
-                SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(nrChannel);
-                List<Segment> testSegm = provider.provideSegments(nrChannel);
-//					logger.inputSegmentsFilenamefo(testSegm);
-                if (testSegm.equals(null)) {
-//						logger.info("list of segments null");
-                    errorLabel.setText("Channel not available!");
-                } else {
-//						SimpleSegmentViewSceneMaker sm = new SimpleSegmentViewSceneMaker(stage, testSegm, 0);
-//						stage.setScene(sm.makeScene());
-                }
-//				}else errorLabel.setText("Channel not available!");
+            } else {
+                errorLabel.setText("Choose the region and the channel!");
             }
         });
     }

@@ -2,11 +2,8 @@ package view.scenemaker;
 
 import classifier.Classifier;
 import classifier.decisiontree.DecisionTreeClassifier;
-import classifier.knn.KnnClassifier;
-import classifier.svm.SvmClassesClassifier;
-import entity.Configuration;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import classifier.knn.KNNClassifier;
+import classifier.svm.SVMClassifier;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -25,7 +22,8 @@ public abstract class AbstractSceneMaker {
     private Menu menu1;
     private Menu menu2;
     private Menu menu3;
-    //    Logger logger = LoggerUtil.logger(getClass());
+    private Menu menu4;
+
     private static String inputFilesPath = "";
 
     public AbstractSceneMaker(Stage stage) {
@@ -53,15 +51,16 @@ public abstract class AbstractSceneMaker {
     protected MenuBar createMenuBar() {
         MenuBar menuBar = new MenuBar();
 
-        menu1 = new Menu("Load file");
+        menu1 = new Menu("Choose Folder");
         menu2 = new Menu("Visualize EEG");
-        menu3 = new Menu("Extract artefact from EEG");
+        menu3 = new Menu("Detect Artifacts");
+        menu4 = new Menu("Train & Test");
 
         if (inputFilesPath.equals("")) {
             disableButtons();
         }
 
-        MenuItem menuItem11 = new MenuItem("Load from ...");
+        MenuItem menuItem11 = new MenuItem("Choose Folder");
         menuItem11.setOnAction(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -72,105 +71,84 @@ public abstract class AbstractSceneMaker {
                 setInputFilesPath(path);
                 enableButtons();
                 System.out.println("Selected path: " + path);
-                ListOfChannelsSceneMaker sm = new ListOfChannelsSceneMaker(stage);
-                stage.setScene(sm.makeScene());
+//                ListOfChannelsSceneMaker sm = new ListOfChannelsSceneMaker(stage);
+//                stage.setScene(sm.makeScene());
+
             }
         });
 
         menu1.getItems().add(menuItem11);
 
-        MenuItem menuItem21 = new MenuItem("Single channel processing");
-        menuItem21.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                ListOfChannelsSceneMaker sm = new ListOfChannelsSceneMaker(
-                        stage);
-                stage.setScene(sm.makeScene());
-            }
+        MenuItem menuItem21 = new MenuItem("Single channel");
+        menuItem21.setOnAction(e -> {
+            System.out.println("Single channel visualization");
+            ListOfChannelsSceneMaker sm = new ListOfChannelsSceneMaker(stage);
+            stage.setScene(sm.makeScene());
         });
 
-        MenuItem menuItem22 = new MenuItem("Multiple channel processing");
-        menuItem22.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-//                logger.info("Visualize Multiple channel processing");
-                ListOfRegionsSceneMaker sm = new ListOfRegionsSceneMaker(stage);
-                stage.setScene(sm.makeScene());
-            }
+        MenuItem menuItem22 = new MenuItem("Multiple channels");
+        menuItem22.setOnAction(e -> {
+            System.out.println("Multiple channels visualization");
+            ListOfRegionsSceneMaker sm = new ListOfRegionsSceneMaker(stage);
+            stage.setScene(sm.makeScene());
         });
-        menu2.getItems().add(menuItem21);
-        menu2.getItems().add(menuItem22);
+        menu2.getItems().addAll(menuItem21, menuItem22);
 
-        Menu menu31 = new Menu("Single channel processing");
-        Menu menuItem311 = new Menu("Binary classification");
-
-        MenuItem menuItem3111 = new MenuItem("SVM");
-        menuItem3111.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                ListOfChannelsBinaryClassificationSceneMaker sm = new ListOfChannelsBinaryClassificationSceneMaker(
-                        stage, "svm");
-                stage.setScene(sm.makeScene());
-            }
+        MenuItem menuItem31 = new MenuItem("KNN");
+        menuItem31.setOnAction(e -> {
+            System.out.println("KNN classifier");
+            Classifier knn = new KNNClassifier();
+            ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
+                    stage, knn, false);
+            stage.setScene(sm.makeScene());
         });
-        MenuItem menuItem3112 = new MenuItem("Error correction clasificators");
-        menuItem3112.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                ListOfChannelsBinaryClassificationSceneMaker sm = new ListOfChannelsBinaryClassificationSceneMaker(
-                        stage, "all");
-                stage.setScene(sm.makeScene());
-            }
+        MenuItem menuItem32 = new MenuItem("Decision tree");
+        menuItem32.setOnAction(e -> {
+            System.out.println("DT classifier");
+            Classifier dt = new DecisionTreeClassifier();
+            ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
+                    stage, dt, false);
+            stage.setScene(sm.makeScene());
         });
-        menuItem311.getItems().addAll(menuItem3111, menuItem3112);
-
-        Menu menu312 = new Menu("Multiclass classification");
-        MenuItem menuItem3121 = new MenuItem("KNN");
-        menuItem3121.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                Classifier knn = new KnnClassifier();
-                ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
-                        stage, knn);
-                stage.setScene(sm.makeScene());
-//                logger.info("Knn");
-            }
+        MenuItem menuItem33 = new MenuItem("SVM");
+        menuItem33.setOnAction(e -> {
+            System.out.println("SVM classifier");
+            Classifier svm = new SVMClassifier();
+            ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
+                    stage, svm, false);
+            stage.setScene(sm.makeScene());
         });
-        MenuItem menuItem3122 = new MenuItem("Decision tree");
-        menuItem3122.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override
-            public void handle(ActionEvent e) {
-                Classifier dt = new DecisionTreeClassifier();
-                ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
-                        stage, dt);
-                stage.setScene(sm.makeScene());
-//                logger.info("DT");
-            }
+        menu3.getItems().addAll(menuItem31, menuItem32, menuItem33);
+
+        MenuItem menuItem41 = new MenuItem("KNN");
+        menuItem41.setOnAction(e -> {
+            System.out.println("KNN classifier");
+            Classifier knn = new KNNClassifier();
+            ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
+                    stage, knn, true);
+            stage.setScene(sm.makeScene());
         });
-        MenuItem menuItem3123 = new MenuItem("SVM");
-        menuItem3123.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                Classifier svm = new SvmClassesClassifier();
-                ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
-                        stage, svm);
-                stage.setScene(sm.makeScene());
-//                logger.info("SVM");
-            }
+        MenuItem menuItem42 = new MenuItem("Decision tree");
+        menuItem42.setOnAction(e -> {
+            System.out.println("DT classifier");
+            Classifier dt = new DecisionTreeClassifier();
+            ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
+                    stage, dt, true);
+            stage.setScene(sm.makeScene());
         });
-        menu312.getItems().addAll(menuItem3121, menuItem3122, menuItem3123);
-        menu31.getItems().addAll(menuItem311, menu312);
+        MenuItem menuItem43 = new MenuItem("SVM");
+        menuItem43.setOnAction(e -> {
+            System.out.println("SVM classifier");
+            Classifier svm = new SVMClassifier();
+            ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
+                    stage, svm, true);
+            stage.setScene(sm.makeScene());
+        });
 
-        menu3.getItems().addAll(menu31);
+        menu4.getItems().addAll(menuItem41, menuItem42, menuItem43);
 
-        menuBar.getMenus().addAll(menu1, menu2, menu3);
+        menuBar.getMenus().addAll(menu1, menu2, menu3, menu4);
         menuBar.prefWidthProperty().bind(stage.widthProperty());
         menuBar.prefHeight(HIGH_STAGE / 20);
         menuBar.setMaxHeight(HIGH_STAGE / 10);
@@ -180,10 +158,12 @@ public abstract class AbstractSceneMaker {
     private void disableButtons() {
         menu2.setDisable(true);
         menu3.setDisable(true);
+        menu4.setDisable(true);
     }
 
     private void enableButtons() {
         menu2.setDisable(false);
         menu3.setDisable(false);
+        menu4.setDisable(false);
     }
 }

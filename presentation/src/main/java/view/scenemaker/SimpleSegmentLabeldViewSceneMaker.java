@@ -38,15 +38,17 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
     protected Label labelLabel = new Label("Type:  ");
     private Classifier clasiffier;
     protected int type; // 0 for binary, 1 for clases
+    private boolean train;
 
     public SimpleSegmentLabeldViewSceneMaker(Stage stage,
                                              Classifier clasiffier, List<Segment> segments,
-                                             int indexOfSegmentToShow, int type) {
+                                             int indexOfSegmentToShow, int type, boolean train) {
         super(stage);
         this.segments = segments;
         this.indexOfSegmentToShow = indexOfSegmentToShow;
         this.clasiffier = clasiffier;
         this.type = type;
+        this.train = train;
     }
 
     @Override
@@ -120,7 +122,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
             public void handle(ActionEvent event) {
 //				logger.info("back");
                 ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
-                        stage, clasiffier);
+                        stage, clasiffier, train);
                 stage.setScene(sm.makeScene());
             }
         });
@@ -136,7 +138,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
                     indexOfSegmentToShow++;
                     SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(
                             stage, clasiffier, segments, indexOfSegmentToShow,
-                            type);
+                            type, train);
                     stage.setScene(sm.makeScene());
                 } else {
 //					logger.info("no more segments");
@@ -155,7 +157,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
                     indexOfSegmentToShow--;
                     SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(
                             stage, clasiffier, segments, indexOfSegmentToShow,
-                            type);
+                            type, train);
                     stage.setScene(sm.makeScene());
                 } else {
 //					logger.info("no more segments");

@@ -1,20 +1,20 @@
  .root{
     -fx-font-family: "Courier New";
-    -fx-base: #224947;
-    -fx-background: #000000;
+    -fx-base: #ffffff;
+    -fx-background: #ffffff;
 }
  .button {
-    -fx-background-color: #224947;
+    -fx-background-color: #00CDCD;
 }
 .chart-content {
-	-fx-background-color: #000000;
+	-fx-background-color: #ffffff;
 }
 .chart {
     -fx-padding: 10px;
-    -fx-background-color: #000000;
+    -fx-background-color: #ffffff;
 }
 .chart-plot-background {
-    -fx-background-color: #25383C;
+    -fx-background-color: #ffffff;
 }
 .chart-vertical-grid-lines {
     -fx-stroke: #3278fa;

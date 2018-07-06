@@ -57,7 +57,7 @@ public abstract class WekaClassifier implements Classifier {
             System.out.println("Dataset: \n");
             System.out.println(trainInstances);
 
-            trainClassifier(trainInstances,true);
+            trainClassifier(trainInstances,false);
 
         } catch (Exception e) {
             e.printStackTrace();

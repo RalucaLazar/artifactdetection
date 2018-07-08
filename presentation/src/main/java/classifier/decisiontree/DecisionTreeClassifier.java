@@ -45,8 +45,7 @@ public class DecisionTreeClassifier extends WekaClassifier {
         System.out.println("Training the classifier with " + trainingData.numInstances() + " instances");
         try {
 
-            //TODO: set the corresponding options
-            String[] options = Utils.splitOptions("");
+            String[] options = Utils.splitOptions("weka.classifiers.trees.REPTree -M 2 -V 0.001 -N 3 -S 1 -L -1 -I 0.0");
 
             REPTreeClassifier.setOptions(options);
             REPTreeClassifier.buildClassifier(trainingData);

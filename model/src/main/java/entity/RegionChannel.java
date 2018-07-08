@@ -22,4 +22,8 @@ public class RegionChannel {
         }
         return null;
     }
+
+    public static List<Integer> getChannelsForRegion(String region){
+        return regionsAndChannels.get(region);
+    }
 }

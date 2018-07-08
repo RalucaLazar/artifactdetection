@@ -4,6 +4,7 @@ import classifier.Classifier;
 import classifier.decisiontree.DecisionTreeClassifier;
 import classifier.knn.KNNClassifier;
 import classifier.svm.SVMClassifier;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -12,6 +13,10 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.File;
+
+import static view.scenemaker.ListOfChannelsSceneMaker.channelComboBox;
+import static view.scenemaker.ListOfChannelsSceneMaker.regionComboBox;
+import static view.util.FileUtil.regionsAndChannels;
 
 @SuppressWarnings("restriction")
 public abstract class AbstractSceneMaker {
@@ -70,9 +75,14 @@ public abstract class AbstractSceneMaker {
                 String path = selectedFolder.getAbsolutePath();
                 setInputFilesPath(path);
                 enableButtons();
+                regionsAndChannels.clear();
+                if (regionComboBox != null) {
+                    regionComboBox.getItems().clear();
+                }
+                if (channelComboBox != null) {
+                    channelComboBox.getItems().clear();
+                }
                 System.out.println("Selected path: " + path);
-//                ListOfChannelsSceneMaker sm = new ListOfChannelsSceneMaker(stage);
-//                stage.setScene(sm.makeScene());
 
             }
         });

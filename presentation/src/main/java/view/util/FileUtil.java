@@ -20,10 +20,9 @@ public class FileUtil {
 
     public FileUtil() {
         folderPath = AbstractSceneMaker.getInputFilesPath();
-        computeRegions();
     }
 
-    private void computeRegions() {
+    public void computeRegions() {
         int line = 0;
 
         File epdFile = getEpdFileFromPath(folderPath);
@@ -81,13 +80,17 @@ public class FileUtil {
 
     private static void computeRegionMap(final String sCurrentLine) {
         final String region = sCurrentLine.substring(0, 1);
-        final String channel = sCurrentLine.substring(1);
+        final String channel = sCurrentLine.substring(sCurrentLine.lastIndexOf(" ") + 1);
 
-        if (!regionsAndChannels.containsKey(region)) {
-            regionsAndChannels.put(region, new ArrayList<>());
-            regionsAndChannels.get(region).add(channel);
-        } else {
-            regionsAndChannels.get(region).add(channel);
+        if (!region.equals("N")) {
+            if (!regionsAndChannels.containsKey(region)) {
+                regionsAndChannels.put(region, new ArrayList<>());
+                regionsAndChannels.get(region).add(channel);
+            } else {
+                if (!regionsAndChannels.get(region).contains(channel)) {
+                    regionsAndChannels.get(region).add(channel);
+                }
+            }
         }
     }
 

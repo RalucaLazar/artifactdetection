@@ -5,10 +5,7 @@ import entity.Segment;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -27,8 +24,8 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
     private static final int NR_CHANNELS = 128;
 
     protected Label errorLabel = new Label("");
-    protected ComboBox regionComboBox;
-    protected ComboBox channelComboBox;
+    public static ComboBox regionComboBox;
+    public static ComboBox channelComboBox;
     final Button visualizeButton = new Button("Visualize!");
     // !!!!!!! ADDED !!!!!
     private String inputSegmentsFilename;
@@ -84,23 +81,34 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 
         // used to populate the region/channel map
         FileUtil fileUtil = new FileUtil();
+        fileUtil.computeRegions();
 
-        // regions
-        regionComboBox = new ComboBox();
-        regionComboBox.getItems().addAll(regionsAndChannels.keySet());
+        if (regionsAndChannels.keySet().size() == 0 || regionsAndChannels.keySet().size() == 1) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText(".edp Warning");
+            alert.setContentText("Your .epd file is not proper formatted!");
 
-        channelComboBox = new ComboBox();
+            alert.showAndWait();
+        } else {
+            // regions
+            regionComboBox = new ComboBox();
+            regionComboBox.getItems().addAll(regionsAndChannels.keySet());
 
-        // this is used to populate channels combobox with specific region channels
-        regionComboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
-            if (newValue == null) {
-                channelComboBox.getItems().clear();
-                channelComboBox.setDisable(true);
-            } else {
-                channelComboBox.setDisable(false);
-                channelComboBox.getItems().setAll(regionsAndChannels.get(newValue));
-            }
-        });
+            channelComboBox = new ComboBox();
+
+            // this is used to populate channels combobox with specific region channels
+            regionComboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
+                if (newValue == null) {
+                    channelComboBox.getItems().clear();
+                    channelComboBox.setDisable(true);
+                } else {
+                    channelComboBox.setDisable(false);
+                    channelComboBox.getItems().setAll(regionsAndChannels.get(newValue));
+                }
+            });
+
+        }
 
         HBox channelsHBox = new HBox();
         channelsHBox.getChildren().addAll(channelsLabel, channelComboBox);

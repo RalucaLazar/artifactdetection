@@ -102,7 +102,6 @@ public class ListOfRegionsSceneMaker extends AbstractSceneMaker {
         grid.add(new Label(" "), 0, 1);
         grid.add(new Label("Region: "), 0, 2);
         grid.add(regionComboBox, 1, 2);
-        grid.add(new Label("Channel no:"), 0, 3);
         grid.add(visualizeButton, 0, 4);
         grid.add(errorLabel, 0, 5);
 
@@ -131,8 +130,15 @@ public class ListOfRegionsSceneMaker extends AbstractSceneMaker {
                 if (testSegm == null) {
                     errorLabel.setText("Channels not available!");
                 } else {
-                    MultipleSegmentViewSceneMaker sm = new MultipleSegmentViewSceneMaker(stage, testSegm, 0);
-                    stage.setScene(sm.makeScene());
+                    if (testSegm.size() == 0) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Warning");
+                        alert.setHeaderText("Visualize segments");
+                        alert.setContentText("There are no segments for selected region.");
+                    } else {
+                        MultipleSegmentViewSceneMaker sm = new MultipleSegmentViewSceneMaker(stage, testSegm, 0);
+                        stage.setScene(sm.makeScene());
+                    }
                 }
             } else {
                 errorLabel.setText("Choose the region!");

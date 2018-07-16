@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import view.chart.MultiSegmentChart;
 
@@ -24,14 +25,11 @@ public class MultipleSegmentViewSceneMaker extends AbstractSceneMaker {
 
     private Button btnNextSegment;
     private Button btnPreviousSegment;
-    private Label initIndexLabel = new Label("Init index: ");
-
 
     public MultipleSegmentViewSceneMaker(Stage stage, List<MultiChannelSegment> segments, int indexOfSegmentToShow) {
         super(stage);
         this.segments = segments;
         this.indexOfSegmentToShow = indexOfSegmentToShow;
-
     }
 
     public Scene makeScene() {
@@ -47,16 +45,17 @@ public class MultipleSegmentViewSceneMaker extends AbstractSceneMaker {
         addActionHandlerForBackButton();
 
         HBox hBox = new HBox();
-        hBox.getChildren().addAll(scrollPaneWithRegister());
+//        hBox.getChildren().addAll(paneWithFlowControl());
 
         MultiSegmentChart lineChartFromMultiSegment = new MultiSegmentChart();
         hBox.getChildren()
                 .addAll(lineChartFromMultiSegment.generateChartFromMultiSegment(segments.get(indexOfSegmentToShow)));
 
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(hBox, this.paneWithFlowControl());
 
-        Scene scene = new Scene(hBox, LENGTH_STAGE, HIGH_STAGE);
+        Scene scene = new Scene(vBox, LENGTH_STAGE, HIGH_STAGE);
         scene.getStylesheets().add("file:src/resources/stylesheet.css");
-
 
         return scene;
     }
@@ -115,11 +114,27 @@ public class MultipleSegmentViewSceneMaker extends AbstractSceneMaker {
         pane1.setHgap(50);
         pane1.setVgap(50);
         pane1.setPadding(new Insets(1, 1, 1, 1));
-        initIndexLabel.setText(initIndexLabel.getText() + segments.get(indexOfSegmentToShow).getInitIdx());
+//        initIndexLabel.setText(initIndexLabel.getText() + segments.get(indexOfSegmentToShow).getInitIdx());
         pane1.add(btnNextSegment, 0, 1);
         pane1.add(btnPreviousSegment, 0, 2);
-        pane1.add(initIndexLabel, 0, 3);
+//        pane1.add(initIndexLabel, 0, 3);
         pane1.add(btnBack, 0, 0);
+        return pane1;
+    }
+
+    private GridPane paneWithFlowControl() {
+
+        GridPane pane1 = new GridPane();
+        // pane1.setAlignment(Pos.TOP_CENTER);
+        pane1.setHgap(50);
+        pane1.setVgap(50);
+        pane1.setPadding(new Insets(1, 1, 1, 1));
+//        initIndexLabel.setText(initIndexLabel.getText()
+//                + segments.get(indexOfSegmentToShow).getInitIdx());
+        pane1.add(btnNextSegment, 12, 0);
+        pane1.add(btnPreviousSegment, 11, 0);
+        pane1.add(btnBack, 10, 0);
+
         return pane1;
     }
 

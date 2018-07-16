@@ -15,17 +15,20 @@ public class ChartHolder {
 	private LineChart<Number, Number> lineChart = new LineChart<Number, Number>(
 			xAxis, yAxis);
 
-	public ChartHolder(String chartName) {
-
+	ChartHolder(String chartName, boolean isMultiChart) {
 		lineChart.setTitle(chartName);
 		lineChart.setCreateSymbols(false);
-		lineChart.setPrefHeight(590);
-		lineChart.setPrefWidth(630);
+		if(!isMultiChart){
+			lineChart.setPrefHeight(590);
+			lineChart.setPrefWidth(630);
+		}else{
+			lineChart.setPrefHeight(590);
+			lineChart.setPrefWidth(1000);
+		}
 		lineChart.setLegendVisible(false);
-
 	}
 
-	public void addSeries(double[] values, String seriesName) {
+	void addSeries(double[] values, String seriesName) {
 		int n = values.length;
 		values[0] = MAX_VALUE_OF_DATA;
 		values[1] = MIN_VALUE_OF_DATA;
@@ -40,7 +43,7 @@ public class ChartHolder {
 		
 	}
 
-	public LineChart<Number, Number> getLineChart() {
+	LineChart<Number, Number> getLineChart() {
 		return lineChart;
 	}
 

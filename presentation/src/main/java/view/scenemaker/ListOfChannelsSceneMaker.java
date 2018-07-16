@@ -23,22 +23,13 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 
     private static final int NR_CHANNELS = 128;
 
-    protected Label errorLabel = new Label("");
-    public static ComboBox regionComboBox;
-    public static ComboBox channelComboBox;
+    Label errorLabel = new Label("");
+    static ComboBox regionComboBox;
+    static ComboBox channelComboBox;
     final Button visualizeButton = new Button("Visualize!");
-    // !!!!!!! ADDED !!!!!
-    private String inputSegmentsFilename;
 
-    public ListOfChannelsSceneMaker(Stage stage) {
+    ListOfChannelsSceneMaker(Stage stage) {
         super(stage);
-        inputSegmentsFilename = Configuration.INPUT_SEGMENTS_FILENAME;
-    }
-
-    // !!!!! ADDED !!!!!
-    public ListOfChannelsSceneMaker(Stage stage, String inputSegmentsFilename) {
-        super(stage);
-        this.inputSegmentsFilename = inputSegmentsFilename;
     }
 
     @Override
@@ -57,6 +48,7 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
     }
 
     private ScrollPane getInitialPane() {
+
 
         ScrollPane pane1 = new ScrollPane();
         HBox root = new HBox();

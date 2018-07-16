@@ -8,10 +8,10 @@ import java.util.List;
 
 public class MultiSegmentChart {
 
-	private static final int SEPARATOR = 9;
+	private static final int SEPARATOR = 30;
 
 	public LineChart<Number, Number> generateChartFromMultiSegment(MultiChannelSegment multiChSeg) {
-		ChartHolder ch = new ChartHolder("MultiChannelSegment");
+		ChartHolder ch = new ChartHolder("MultiChannelSegment starting from " + multiChSeg.getInitIdx() + " ms",true);
 		List<Segment> normalSegments = multiChSeg.getSegments();
 		int n = normalSegments.size();
 		for (int i = 0; i < n; i++) {

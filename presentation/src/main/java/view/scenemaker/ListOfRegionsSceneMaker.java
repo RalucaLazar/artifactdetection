@@ -135,6 +135,7 @@ public class ListOfRegionsSceneMaker extends AbstractSceneMaker {
                         alert.setTitle("Warning");
                         alert.setHeaderText("Visualize segments");
                         alert.setContentText("There are no segments for selected region.");
+                        alert.show();
                     } else {
                         MultipleSegmentViewSceneMaker sm = new MultipleSegmentViewSceneMaker(stage, testSegm, 0);
                         stage.setScene(sm.makeScene());

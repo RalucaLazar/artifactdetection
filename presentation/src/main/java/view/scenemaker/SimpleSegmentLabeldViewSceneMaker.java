@@ -16,6 +16,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import postprocessing.AbstractFileGenerator;
 import postprocessing.ClasesFileGenerator;
+import postprocessing.StatisticsBarChart;
+import postprocessing.model.CSVReport;
+import postprocessing.model.PDFReport;
 import view.chart.SimpleSegmentChart;
 
 import java.text.DecimalFormat;
@@ -70,7 +73,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 
         btnGenerateClenSignal = new Button();
         btnGenerateClenSignal.setText("Get clean signal");
-        addActionHandlerForGenerateClenSignal();
+        addActionHandlerForGenerateCleanSignal();
 
         HBox hBox = new HBox();
         hBox.getChildren().addAll(paneWithInfo());
@@ -87,7 +90,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
     }
 
     @SuppressWarnings("restriction")
-    protected void addActionHandlerForGenerateClenSignal() {
+    protected void addActionHandlerForGenerateCleanSignal() {
         btnGenerateClenSignal.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -95,6 +98,11 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 //				logger.info("generate clean");
                 AbstractFileGenerator fileGenerator = new ClasesFileGenerator();
                 fileGenerator.generateFileFromSegment(segments);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Dialog");
+                alert.setHeaderText("Cleaned Signal");
+                alert.setContentText("Successfully generated clean EEG signal.");
+                alert.show();
 //				logger.info("File with clean signal was generated");
             }
         });
@@ -107,9 +115,18 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
             @Override
             public void handle(ActionEvent event) {
 //				logger.info("generate report");
-                AbstractFileGenerator fileGenerator = new ClasesFileGenerator();
-                fileGenerator.outputStatistics(segments);
-//				logger.info("Statistics was generated!");
+//                AbstractFileGenerator fileGenerator = new ClasesFileGenerator();
+//                fileGenerator.outputStatistics(segments);
+                PDFReport pdfReport = new PDFReport("segments_statistics", segments);
+                pdfReport.generateReport();
+                CSVReport csvReport = new CSVReport("segments_statistics", segments);
+                csvReport.generateReport();
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Dialog");
+                alert.setHeaderText("Statistics report");
+                alert.setContentText("Successfully generated statistics.");
+                alert.show();
+                StatisticsBarChart.createChart(segments);
             }
         });
     }
